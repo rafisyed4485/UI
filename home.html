@@ -142,6 +142,55 @@
       margin-top: 2rem;
       display: none;
     }
+
+    #controlsSection {
+      display: none;
+      padding: 2rem;
+    }
+
+    #controlsSection h2 {
+      margin-bottom: 1rem;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    table, th, td {
+      border: 1px solid #ccc;
+    }
+
+    th, td {
+      padding: 10px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #f2f2f2;
+    }
+
+    .action-btn {
+      margin-right: 8px;
+      padding: 5px 10px;
+      border: none;
+      color: white;
+      background-color: #1877f2;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .action-btn:hover {
+      background-color: #0f63d6;
+    }
+
+    .reset-link {
+      margin-top: 1rem;
+      display: inline-block;
+      color: #1877f2;
+      text-decoration: underline;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
@@ -170,16 +219,19 @@
       <img src="https://steptodown.com/freepik-downloader/images/steptodown.com480872.jpg" class="active" />
       <img src="https://steptodown.com/freepik-downloader/images/steptodown.com570341.jpg" />
       <img src="https://wallpapercat.com/w/middle-retina/9/3/2/5817846-3840x2160-desktop-hd-motivational-background-image.jpg" />
-  	<img src="https://steptodown.com/freepik-downloader/images/steptodown.com123935.jpg" />
-	
+      <img src="https://steptodown.com/freepik-downloader/images/steptodown.com123935.jpg" />
     </div>
+
     <div class="quiz-links">
       <a href="#" onclick="showQuiz1()">Quiz 1</a>
       <a href="#" onclick="showQuiz2()">Quiz 2</a>
+      <a href="#" onclick="showControls()">Controls</a>
     </div>
+
     <div id="quizForm">
       <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfT6W9I7GS6xnPujZgnpJd0j8YtJLG1xdQ-Y6ShO1YZ7-_5Cw/viewform?embedded=true" width="1200" height="1822" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
     </div>
+
     <div id="quizForm2">
       <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSd4sleUPDexnAR8eKNnbgP3lUOwINe3S-LTeTiwlfbG73cdkQ/viewform?embedded=true" width="1800" height="377" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
     </div>
@@ -187,10 +239,26 @@
 
   <div class="products" id="productContainer"></div>
 
+  <div id="controlsSection">
+    <h2>Table Example</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Firstname</th>
+          <th>Lastname</th>
+          <th>Email</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody id="tableBody"></tbody>
+    </table>
+    <a class="reset-link" onclick="resetTable()">Reset Table Rows</a>
+  </div>
+
   <script>
     const userId = localStorage.getItem('loggedInUser');
     if (!userId) {
-      window.location.href = "index.html"; // Redirect to login if not logged in
+      window.location.href = "index.html";
     } else {
       document.getElementById('userDisplay').innerText = userId;
     }
@@ -198,7 +266,7 @@
     function signOut() {
       localStorage.removeItem('loggedInUser');
       localStorage.removeItem('cartItems');
-      window.location.href = "index.html"; // Redirect to login page
+      window.location.href = "index.html";
     }
 
     function goToQuiz1() {
@@ -208,17 +276,31 @@
     }
 
     function showQuiz1() {
-      document.getElementById('productContainer').innerHTML = '';
+      hideAllSections();
       document.getElementById('quizForm').style.display = 'block';
-      document.getElementById('quizForm2').style.display = 'none';
       document.getElementById('quizForm').scrollIntoView({ behavior: 'smooth' });
     }
 
     function showQuiz2() {
-      document.getElementById('productContainer').innerHTML = '';
-      document.getElementById('quizForm').style.display = 'none';
+      hideAllSections();
       document.getElementById('quizForm2').style.display = 'block';
       document.getElementById('quizForm2').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function showControls() {
+      hideAllSections();
+      currentTableData = shuffleArray(originalTableData);
+      renderTable(currentTableData);
+      document.getElementById('controlsSection').style.display = 'block';
+      document.getElementById('controlsSection').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function hideAllSections() {
+      document.getElementById('slideshowSection').style.display = 'none';
+      document.getElementById('quizForm').style.display = 'none';
+      document.getElementById('quizForm2').style.display = 'none';
+      document.getElementById('controlsSection').style.display = 'none';
+      document.getElementById('productContainer').innerHTML = '';
     }
 
     const productList = [
@@ -236,9 +318,7 @@
     };
 
     function renderProducts(products, isCart = false) {
-      document.getElementById('slideshowSection').style.display = 'none';
-      document.getElementById('quizForm').style.display = 'none';
-      document.getElementById('quizForm2').style.display = 'none';
+      hideAllSections();
       const container = document.getElementById('productContainer');
       container.innerHTML = "";
       products.forEach(name => {
@@ -247,15 +327,14 @@
         const button = isCart
           ? `<button onclick="removeFromCart('${name}')">Remove</button>`
           : `<button onclick="addToCart('${name}')">Add to Cart</button>`;
-        const productHTML = `
+        container.insertAdjacentHTML('beforeend', `
           <div class="product">
             <img src="${img}" alt="${name}">
             <p><strong>${name}</strong></p>
             <p>$${price}</p>
             ${button}
           </div>
-        `;
-        container.insertAdjacentHTML('beforeend', productHTML);
+        `);
       });
     }
 
@@ -280,19 +359,13 @@
     }
 
     function showCartProducts() {
-      document.getElementById('slideshowSection').style.display = 'none';
-      document.getElementById('quizForm').style.display = 'none';
-      document.getElementById('quizForm2').style.display = 'none';
+      hideAllSections();
       const cart = JSON.parse(localStorage.getItem('cartItems')) || [];
-      const container = document.getElementById('productContainer');
-      container.innerHTML = "";
-
       if (cart.length === 0) {
         alert("Your cart is empty.");
         updateCartCount();
         return;
       }
-
       renderProducts(cart, true);
     }
 
@@ -310,6 +383,58 @@
       currentSlide = (currentSlide + 1) % slides.length;
       slides[currentSlide].classList.add('active');
     }, 3000);
+
+    // Controls table logic
+    const originalTableData = [
+      { firstname: 'John', lastname: 'Doe', email: 'john@example.com' },
+      { firstname: 'July', lastname: 'Dooley', email: 'july@example.com' },
+      { firstname: 'Jane', lastname: 'Doe', email: 'jane@example.com' },
+      { firstname: 'John', lastname: 'Little', email: 'john@example.com' }
+    ];
+    let currentTableData = [];
+
+    function shuffleArray(array) {
+      return [...array].sort(() => Math.random() - 0.5);
+    }
+
+    function renderTable(data) {
+      const tbody = document.getElementById('tableBody');
+      tbody.innerHTML = '';
+      data.forEach((row, index) => {
+        tbody.innerHTML += `
+          <tr>
+            <td>${row.firstname}</td>
+            <td>${row.lastname}</td>
+            <td>${row.email}</td>
+            <td>
+              <button class="action-btn" onclick="removeRow(${index})">Remove</button>
+              <button class="action-btn" onclick="editRow(${index})">Edit</button>
+            </td>
+          </tr>
+        `;
+      });
+    }
+
+    function removeRow(index) {
+      currentTableData.splice(index, 1);
+      renderTable(currentTableData);
+    }
+
+    function editRow(index) {
+      const person = currentTableData[index];
+      const fname = prompt("Edit Firstname:", person.firstname);
+      const lname = prompt("Edit Lastname:", person.lastname);
+      const email = prompt("Edit Email:", person.email);
+      if (fname && lname && email) {
+        currentTableData[index] = { firstname: fname, lastname: lname, email: email };
+        renderTable(currentTableData);
+      }
+    }
+
+    function resetTable() {
+      currentTableData = [...originalTableData];
+      renderTable(currentTableData);
+    }
   </script>
 
 </body>
