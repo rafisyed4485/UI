@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Login Page</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f2f5;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Top left logo section */
+    .top-bar {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 20px 40px;
+    }
+
+    .logo-text {
+      font-size: 28px;
+      font-weight: bold;
+      display: flex;
+      gap: 4px;
+      align-items: center;
+    }
+
+    .logo-text .black {
+      color: #000000;
+    }
+
+    .logo-text .blue {
+      color: #00bcd4;
+    }
+
+    .logo-text .pink {
+      color: #ff1744;
+    }
+
+    .tagline {
+      font-size: 16px;
+      font-weight: bold;
+      color: #444;
+      margin-top: 6px;
+      font-style: italic;
+      letter-spacing: 0.5px;
+    }
+
+    .wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex: 1;
+    }
+
+    .login-container {
+      background-color: white;
+      padding: 3rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
+      width: 400px;
+      text-align: center;
+      z-index: 1;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    input {
+      width: 100%;
+      padding: 14px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 16px;
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      background-color: #1877f2;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    button:disabled {
+      background-color: #a3c2f0;
+      cursor: not-allowed;
+    }
+
+    .forgot-password {
+      margin-top: 14px;
+      display: block;
+      color: #1877f2;
+      text-decoration: none;
+      font-size: 1rem;
+    }
+
+    .forgot-password.disabled {
+      pointer-events: none;
+      color: gray;
+      text-decoration: none;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.4);
+      overflow-y: auto;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+      background-color: #fff;
+      margin: auto;
+      padding: 20px;
+      border-radius: 10px;
+      width: 90%;
+      max-width: 400px;
+      position: relative;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 8px;
+      right: 12px;
+      font-size: 24px;
+      font-weight: bold;
+      color: #aaa;
+      cursor: pointer;
+    }
+
+    .close-btn:hover {
+      color: black;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top-left logo and description -->
+  <div class="top-bar">
+    <div class="logo-text">
+      <span class="black">Dream</span><span class="blue">IT</span><span class="pink">Solutions</span>
+    </div>
+    <div class="tagline">If you can do it you can make it.</div>
+  </div>
+
+  <!-- Login section only -->
+  <div class="wrapper">
+    <div class="login-container">
+      <h2 style="font-size: 24px; margin-bottom: 20px;">Login</h2>
+
+      <div id="inputFields">
+        <input type="text" id="userId" placeholder="Email (@gmail.com)">
+        <input type="password" id="password" placeholder="Password" disabled>
+      </div>
+
+      <div id="loginControls">
+        <button id="loginBtn" disabled onclick="login()">Login</button>
+        <a href="forgot-password.html" id="forgotLink" class="forgot-password disabled">Forgot Password?</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Signup Modal -->
+  <div id="signupModal" class="modal">
+    <div class="modal-content">
+      <span class="close-btn" onclick="closeModal()">&times;</span>
+      <h2>Sign Up</h2>
+      <input type="text" placeholder="Email">
+      <input type="password" placeholder="Password">
+      <input type="password" placeholder="Confirm Password">
+      <button>Sign Up</button>
+    </div>
+  </div>
+
+  <script>
+    const userId = document.getElementById('userId');
+    const password = document.getElementById('password');
+    const loginBtn = document.getElementById('loginBtn');
+    const forgotLink = document.getElementById('forgotLink');
+    const loginControls = document.getElementById('loginControls');
+    const inputFields = document.getElementById('inputFields');
+    const modal = document.getElementById('signupModal');
+
+    function validateInputs() {
+      const userVal = userId.value.trim();
+      const passVal = password.value.trim();
+      const isEmailValid = userVal.endsWith('@gmail.com');
+      const isPasswordValid = /[A-Za-z]/.test(passVal) && /\d/.test(passVal);
+
+      password.disabled = !isEmailValid;
+      loginBtn.disabled = !(isEmailValid && isPasswordValid);
+      forgotLink.classList.toggle('disabled', !isEmailValid);
+    }
+
+    userId.addEventListener('input', validateInputs);
+    password.addEventListener('input', validateInputs);
+
+    function login() {
+      localStorage.setItem('loggedInUser', userId.value.trim());
+      window.location.href = "home.html";
+    }
+
+    function showModal() {
+      modal.style.display = 'flex';
+      loginControls.classList.add('hidden');
+      inputFields.classList.add('hidden');
+    }
+
+    function closeModal() {
+      modal.style.display = 'none';
+      loginControls.classList.remove('hidden');
+      inputFields.classList.remove('hidden');
+    }
+
+    // Optional: Auto show signup modal every 60 seconds
+    setInterval(showModal, 60000);
+  </script>
+
+</body>
+</html>
