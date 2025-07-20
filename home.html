@@ -2,67 +2,167 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Home Page</title>
+  <title>Dream IT Solutions</title>
   <style>
     body {
       font-family: Arial, sans-serif;
       margin: 0;
-      padding: 0;
+      background: #fff;
     }
 
-    .header {
-      background-color: #f8f8f8;
-      padding: 1rem;
+    header {
+      background-color: #ffffff;
+      padding: 1rem 2rem;
       display: flex;
       justify-content: space-between;
+      align-items: flex-start;
+      border-bottom: 1px solid #ccc;
+    }
+
+    .logo {
+      font-size: 1.8rem;
+      font-weight: bold;
+    }
+
+    .logo span {
+      font-weight: bold;
+    }
+
+    .nav-actions {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+    }
+
+    .nav-actions .links {
+      display: flex;
+      gap: 20px;
       align-items: center;
     }
 
-    .brand-logo {
-      font-size: 1.8rem;
-      font-weight: bold;
-      color: #c80000;
-      letter-spacing: 1px;
+    .nav-actions a {
+      color: #1877f2;
+      text-decoration: underline;
+      font-size: 0.95rem;
+      cursor: pointer;
     }
 
-    .nav-links {
+    .welcome {
+      font-size: 0.9rem;
+      color: #555;
+      margin-top: 6px;
+    }
+
+    .slideshow-wrapper {
+      background-color: white;
       display: flex;
-      gap: 1.5rem;
+      flex-direction: column;
+      align-items: center;
+      padding: 1rem 0;
     }
 
-    .nav-links a {
-      text-decoration: none;
-      font-weight: bold;
-      font-size: 1.1rem;
+    .slideshow {
+      width: 80%;
+      max-width: 1800px;
+      height: 820px;
+      position: relative;
+      overflow: hidden;
+      border-radius: 12px;
+      box-shadow: 0 0 0 2px #ffffff;
     }
 
-    .nav-links .quiz-link {
-      color: darkgreen;
+    .slideshow img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: none;
+      position: absolute;
+      top: 0;
+      left: 0;
     }
 
-    .nav-links .controls-link {
-      color: orange;
+    .slideshow img.active {
+      display: block;
     }
 
-    .slideshow, .quiz-section, .controls-section {
+    .quiz-links {
+      display: flex;
+      gap: 30px;
+      margin-top: 1rem;
+    }
+
+    .quiz-links a {
+      font-size: 1rem;
+      color: #1877f2;
+      text-decoration: underline;
+      cursor: pointer;
+    }
+
+    .products {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
       padding: 2rem;
     }
 
-    iframe {
+    .product {
+      background: white;
+      padding: 1rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      width: 160px;
+      text-align: center;
+    }
+
+    .product img {
+      width: 60px;
+      height: 60px;
+      object-fit: contain;
+      margin-bottom: 0.5rem;
+    }
+
+    .product button {
+      margin-top: 10px;
+      padding: 6px 10px;
+      background-color: #1877f2;
+      color: white;
       border: none;
-      width: 100%;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .product button:hover {
+      background-color: #0f63d6;
+    }
+
+    #quizForm, #quizForm2 {
+      padding: 2rem;
+      background: #f9f9f9;
+      margin-top: 2rem;
+      display: none;
+    }
+
+    #controlsSection {
+      display: none;
+      padding: 2rem;
+    }
+
+    #controlsSection h2 {
+      margin-bottom: 1rem;
     }
 
     table {
       width: 100%;
       border-collapse: collapse;
-      margin-top: 1rem;
+    }
+
+    table, th, td {
+      border: 1px solid #ccc;
     }
 
     th, td {
-      border: 1px solid #ccc;
-      padding: 0.75rem;
+      padding: 10px;
       text-align: left;
     }
 
@@ -70,9 +170,23 @@
       background-color: #f2f2f2;
     }
 
+    .action-btn {
+      margin-right: 8px;
+      padding: 5px 10px;
+      border: none;
+      color: white;
+      background-color: #1877f2;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .action-btn:hover {
+      background-color: #0f63d6;
+    }
+
     .reset-link {
-      display: inline-block;
       margin-top: 1rem;
+      display: inline-block;
       color: #1877f2;
       text-decoration: underline;
       cursor: pointer;
@@ -81,33 +195,53 @@
 </head>
 <body>
 
-  <!-- Header -->
-  <div class="header">
-    <div class="brand-logo">Digital World</div>
-    <div class="nav-links">
-      <a href="#" class="quiz-link" onclick="showQuiz()">Quiz</a>
-      <a href="#" class="controls-link" onclick="showControls()">Controls</a>
+  <header>
+    <div class="logo">
+      <a href="home.html" style="text-decoration: none; color: inherit;">
+        Dream<span style="color:#00bcd4;">IT</span><span style="color:#ff1744;">Solutions</span>
+      </a>
+    </div>
+    <div class="nav-actions">
+      <div class="links">
+        <a href="#" onclick="renderProducts(productList)">All Products</a>
+        <a href="#" onclick="showCartProducts()">Cart (<span id="cartCount">0</span>)</a>
+        <a href="#" onclick="goToQuiz1()">Quiz</a>
+        <a href="#" onclick="signOut()">Sign Out</a>
+      </div>
+      <div class="welcome">
+        Welcome, <span id="userDisplay">User</span>!
+      </div>
+    </div>
+  </header>
+
+  <div class="slideshow-wrapper" id="slideshowSection">
+    <div class="slideshow" id="slideshow">
+      <img src="https://steptodown.com/freepik-downloader/images/steptodown.com480872.jpg" class="active" />
+      <img src="https://steptodown.com/freepik-downloader/images/steptodown.com570341.jpg" />
+      <img src="https://wallpapercat.com/w/middle-retina/9/3/2/5817846-3840x2160-desktop-hd-motivational-background-image.jpg" />
+      <img src="https://steptodown.com/freepik-downloader/images/steptodown.com123935.jpg" />
+    </div>
+
+    <div class="quiz-links">
+      <a href="#" onclick="showQuiz1()">Quiz 1</a>
+      <a href="#" onclick="showQuiz2()">Quiz 2</a>
+      <a href="#" onclick="showControls()">Controls</a>
+    </div>
+
+    <div id="quizForm">
+      <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfT6W9I7GS6xnPujZgnpJd0j8YtJLG1xdQ-Y6ShO1YZ7-_5Cw/viewform?embedded=true" width="1200" height="1822" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
+    </div>
+
+    <div id="quizForm2">
+      <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSd4sleUPDexnAR8eKNnbgP3lUOwINe3S-LTeTiwlfbG73cdkQ/viewform?embedded=true" width="1800" height="377" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
     </div>
   </div>
 
-  <!-- Slideshow Section -->
-  <div id="slideshowSection" class="slideshow">
-    <h2>Welcome to Digital World</h2>
-    <p>Explore products, quizzes, and controls!</p>
-  </div>
+  <div class="products" id="productContainer"></div>
 
-  <!-- Quiz Section -->
-  <div id="quizSection" class="quiz-section" style="display: none;">
-    <div style="display: flex; gap: 2rem;">
-      <iframe id="quizForm" src="https://docs.google.com/forms/d/e/1FAIpQLSd4sleUPDexnAR8eKNnbgP3lUOwINe3S-LTeTiwlfbG73cdkQ/viewform?embedded=true" height="600"></iframe>
-      <iframe id="quizForm2" src="https://strawpoll.com/embed/e2naXJBKMyB" height="800"></iframe>
-    </div>
-  </div>
-
-  <!-- Controls Section -->
-  <div id="controlsSection" class="controls-section" style="display: none;">
+  <div id="controlsSection">
     <h2>Table Example</h2>
-    <table id="userTable">
+    <table>
       <thead>
         <tr>
           <th>Firstname</th>
@@ -122,13 +256,141 @@
   </div>
 
   <script>
+    const userId = localStorage.getItem('loggedInUser');
+    if (!userId) {
+      window.location.href = "index.html";
+    } else {
+      document.getElementById('userDisplay').innerText = userId;
+    }
+
+    function signOut() {
+      localStorage.removeItem('loggedInUser');
+      localStorage.removeItem('cartItems');
+      window.location.href = "index.html";
+    }
+
+    function goToQuiz1() {
+      document.getElementById('quizForm').style.display = 'none';
+      document.getElementById('quizForm2').style.display = 'none';
+      document.querySelector('.quiz-links').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function showQuiz1() {
+      hideAllSections();
+      document.getElementById('quizForm').style.display = 'block';
+      document.getElementById('quizForm').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function showQuiz2() {
+      hideAllSections();
+      document.getElementById('quizForm2').style.display = 'block';
+      document.getElementById('quizForm2').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function showControls() {
+      hideAllSections();
+      currentTableData = shuffleArray(originalTableData);
+      renderTable(currentTableData);
+      document.getElementById('controlsSection').style.display = 'block';
+      document.getElementById('controlsSection').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function hideAllSections() {
+      document.getElementById('slideshowSection').style.display = 'none';
+      document.getElementById('quizForm').style.display = 'none';
+      document.getElementById('quizForm2').style.display = 'none';
+      document.getElementById('controlsSection').style.display = 'none';
+      document.getElementById('productContainer').innerHTML = '';
+    }
+
+    const productList = [
+      "iPhone 14", "Galaxy S23", "Pixel 7", "OnePlus 11", "Xiaomi 13", "Motorola Edge", "Nokia XR20"
+    ];
+
+    const productImages = {
+      "iPhone 14": "https://cdn-icons-png.flaticon.com/128/833/833472.png",
+      "Galaxy S23": "https://cdn-icons-png.flaticon.com/128/833/833462.png",
+      "Pixel 7": "https://cdn-icons-png.flaticon.com/128/1055/1055687.png",
+      "OnePlus 11": "https://cdn-icons-png.flaticon.com/128/2920/2920676.png",
+      "Xiaomi 13": "https://cdn-icons-png.flaticon.com/128/1055/1055672.png",
+      "Motorola Edge": "https://cdn-icons-png.flaticon.com/128/906/906334.png",
+      "Nokia XR20": "https://cdn-icons-png.flaticon.com/128/906/906343.png"
+    };
+
+    function renderProducts(products, isCart = false) {
+      hideAllSections();
+      const container = document.getElementById('productContainer');
+      container.innerHTML = "";
+      products.forEach(name => {
+        const price = (Math.floor(Math.random() * 500) + 300) + ".00";
+        const img = productImages[name] || "https://via.placeholder.com/60";
+        const button = isCart
+          ? `<button onclick="removeFromCart('${name}')">Remove</button>`
+          : `<button onclick="addToCart('${name}')">Add to Cart</button>`;
+        container.insertAdjacentHTML('beforeend', `
+          <div class="product">
+            <img src="${img}" alt="${name}">
+            <p><strong>${name}</strong></p>
+            <p>$${price}</p>
+            ${button}
+          </div>
+        `);
+      });
+    }
+
+    function addToCart(product) {
+      let cart = JSON.parse(localStorage.getItem('cartItems')) || [];
+      if (!cart.includes(product)) {
+        cart.push(product);
+        localStorage.setItem('cartItems', JSON.stringify(cart));
+        updateCartCount();
+        alert(`${product} added to cart!`);
+      } else {
+        alert(`${product} is already in cart.`);
+      }
+    }
+
+    function removeFromCart(product) {
+      let cart = JSON.parse(localStorage.getItem('cartItems')) || [];
+      cart = cart.filter(item => item !== product);
+      localStorage.setItem('cartItems', JSON.stringify(cart));
+      updateCartCount();
+      showCartProducts();
+    }
+
+    function showCartProducts() {
+      hideAllSections();
+      const cart = JSON.parse(localStorage.getItem('cartItems')) || [];
+      if (cart.length === 0) {
+        alert("Your cart is empty.");
+        updateCartCount();
+        return;
+      }
+      renderProducts(cart, true);
+    }
+
+    function updateCartCount() {
+      const cart = JSON.parse(localStorage.getItem('cartItems')) || [];
+      document.getElementById('cartCount').innerText = cart.length;
+    }
+
+    updateCartCount();
+
+    const slides = document.querySelectorAll('#slideshow img');
+    let currentSlide = 0;
+    setInterval(() => {
+      slides[currentSlide].classList.remove('active');
+      currentSlide = (currentSlide + 1) % slides.length;
+      slides[currentSlide].classList.add('active');
+    }, 3000);
+
+    // Controls table logic
     const originalTableData = [
       { firstname: 'John', lastname: 'Doe', email: 'john@example.com' },
       { firstname: 'July', lastname: 'Dooley', email: 'july@example.com' },
       { firstname: 'Jane', lastname: 'Doe', email: 'jane@example.com' },
       { firstname: 'John', lastname: 'Little', email: 'john@example.com' }
     ];
-
     let currentTableData = [];
 
     function shuffleArray(array) {
@@ -139,17 +401,17 @@
       const tbody = document.getElementById('tableBody');
       tbody.innerHTML = '';
       data.forEach((row, index) => {
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-          <td>${row.firstname}</td>
-          <td>${row.lastname}</td>
-          <td>${row.email}</td>
-          <td>
-            <button onclick="removeRow(${index})">Remove</button>
-            <button onclick="editRow(${index})">Edit</button>
-          </td>
+        tbody.innerHTML += `
+          <tr>
+            <td>${row.firstname}</td>
+            <td>${row.lastname}</td>
+            <td>${row.email}</td>
+            <td>
+              <button class="action-btn" onclick="removeRow(${index})">Remove</button>
+              <button class="action-btn" onclick="editRow(${index})">Edit</button>
+            </td>
+          </tr>
         `;
-        tbody.appendChild(tr);
       });
     }
 
@@ -172,22 +434,6 @@
     function resetTable() {
       currentTableData = [...originalTableData];
       renderTable(currentTableData);
-    }
-
-    function showQuiz() {
-      document.getElementById('slideshowSection').style.display = 'none';
-      document.getElementById('controlsSection').style.display = 'none';
-      document.getElementById('quizSection').style.display = 'block';
-      document.getElementById('quizSection').scrollIntoView({ behavior: 'smooth' });
-    }
-
-    function showControls() {
-      document.getElementById('slideshowSection').style.display = 'none';
-      document.getElementById('quizSection').style.display = 'none';
-      document.getElementById('controlsSection').style.display = 'block';
-      currentTableData = shuffleArray(originalTableData);
-      renderTable(currentTableData);
-      document.getElementById('controlsSection').scrollIntoView({ behavior: 'smooth' });
     }
   </script>
 
