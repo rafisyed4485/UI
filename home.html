@@ -206,6 +206,7 @@
         <a href="#" onclick="renderProducts(productList)">All Products</a>
         <a href="#" onclick="showCartProducts()">Cart (<span id="cartCount">0</span>)</a>
         <a href="#" onclick="goToQuiz1()">Quiz</a>
+        <a href="#" onclick="showControls()">Controls</a>
         <a href="#" onclick="signOut()">Sign Out</a>
       </div>
       <div class="welcome">
@@ -225,7 +226,6 @@
     <div class="quiz-links">
       <a href="#" onclick="showQuiz1()">Quiz 1</a>
       <a href="#" onclick="showQuiz2()">Quiz 2</a>
-      <a href="#" onclick="showControls()">Controls</a>
     </div>
 
     <div id="quizForm">
@@ -233,27 +233,27 @@
     </div>
 
     <div id="quizForm2">
-      <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSd4sleUPDexnAR8eKNnbgP3lUOwINe3S-LTeTiwlfbG73cdkQ/viewform?embedded=true" width="1800" height="377" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
+      <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSd4sleUPDexnAR8eKNnbgP3lUOwINe3S-LTeTiwlfbG73cdkQ/viewform?embedded=true" width="1800" height="600" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
+    </div>
+
+    <div id="controlsSection">
+      <h2>Table Example</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Firstname</th>
+            <th>Lastname</th>
+            <th>Email</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="tableBody"></tbody>
+      </table>
+      <a class="reset-link" onclick="resetTable()">Reset Table Rows</a>
     </div>
   </div>
 
   <div class="products" id="productContainer"></div>
-
-  <div id="controlsSection">
-    <h2>Table Example</h2>
-    <table>
-      <thead>
-        <tr>
-          <th>Firstname</th>
-          <th>Lastname</th>
-          <th>Email</th>
-          <th>Action</th>
-        </tr>
-      </thead>
-      <tbody id="tableBody"></tbody>
-    </table>
-    <a class="reset-link" onclick="resetTable()">Reset Table Rows</a>
-  </div>
 
   <script>
     const userId = localStorage.getItem('loggedInUser');
@@ -296,7 +296,7 @@
     }
 
     function hideAllSections() {
-      document.getElementById('slideshowSection').style.display = 'none';
+      // FIX: Do not hide slideshowSection because it contains the forms and controls
       document.getElementById('quizForm').style.display = 'none';
       document.getElementById('quizForm2').style.display = 'none';
       document.getElementById('controlsSection').style.display = 'none';
