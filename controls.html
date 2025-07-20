@@ -59,12 +59,23 @@
       color: white;
     }
 
+    .save-btn {
+      background-color: #2196F3;
+      color: white;
+    }
+
     .reset-link {
       display: inline-block;
       margin-top: 1rem;
       color: #1877f2;
       cursor: pointer;
       text-decoration: underline;
+    }
+
+    input[type="text"] {
+      width: 90%;
+      padding: 5px;
+      font-size: 1rem;
     }
   </style>
 </head>
@@ -113,12 +124,12 @@
       data.forEach((row, index) => {
         const tr = document.createElement('tr');
         tr.innerHTML = `
-          <td>${row.firstname}</td>
-          <td>${row.lastname}</td>
-          <td>${row.email}</td>
+          <td><span>${row.firstname}</span></td>
+          <td><span>${row.lastname}</span></td>
+          <td><span>${row.email}</span></td>
           <td>
             <button class="remove-btn" onclick="removeRow(${index})">Remove</button>
-            <button class="edit-btn" onclick="editRow(${index})">Edit</button>
+            <button class="edit-btn" onclick="toggleEdit(${index}, this)">Edit</button>
           </td>
         `;
         tbody.appendChild(tr);
@@ -130,8 +141,31 @@
       renderTable(shuffledData);
     }
 
-    function editRow(index) {
-      alert("Edit function triggered for: " + JSON.stringify(shuffledData[index], null, 2));
+    function toggleEdit(index, button) {
+      const row = document.querySelectorAll('#userTable tbody tr')[index];
+      const spans = row.querySelectorAll('td span');
+
+      if (button.innerText === "Edit") {
+        spans.forEach(span => {
+          const text = span.textContent;
+          const input = document.createElement("input");
+          input.type = "text";
+          input.value = text;
+          span.replaceWith(input);
+        });
+        button.innerText = "Save";
+        button.classList.remove("edit-btn");
+        button.classList.add("save-btn");
+      } else {
+        const inputs = row.querySelectorAll('td input');
+        const updated = {
+          firstname: inputs[0].value,
+          lastname: inputs[1].value,
+          email: inputs[2].value
+        };
+        shuffledData[index] = updated;
+        renderTable(shuffledData);
+      }
     }
 
     function resetTable() {
