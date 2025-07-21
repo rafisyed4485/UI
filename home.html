@@ -154,16 +154,14 @@
     </div>
     <div class="nav-actions">
       <div class="links">
-  <a href="#" onclick="renderProducts(productList)">All Products</a>
-  <a href="#" onclick="showCartProducts()">Cart (<span id="cartCount">0</span>)</a>
-  <a href="#" onclick="goToQuiz1()">Quiz</a>
-  <a href="controls.html">Controls</a>
-  <a href="#" onclick="signOut()">Sign Out</a>
-</div>
-
-      <div class="welcome">
-        Welcome, <span id="userDisplay">User</span>!
+        <a href="#" onclick="renderProducts(productList)">All Products</a>
+        <a href="#" onclick="showCartProducts()">Cart (<span id="cartCount">0</span>)</a>
+        <a href="#" onclick="goToQuiz1()">Quiz</a>
+        <a href="quiz-results.html">Quiz Results</a>
+        <a href="controls.html">Controls</a>
+        <a href="#" onclick="signOut()">Sign Out</a>
       </div>
+      <div class="welcome">Welcome, <span id="userDisplay">User</span>!</div>
     </div>
   </header>
 
@@ -172,18 +170,17 @@
       <img src="https://steptodown.com/freepik-downloader/images/steptodown.com480872.jpg" class="active" />
       <img src="https://steptodown.com/freepik-downloader/images/steptodown.com570341.jpg" />
       <img src="https://wallpapercat.com/w/middle-retina/9/3/2/5817846-3840x2160-desktop-hd-motivational-background-image.jpg" />
-  	<img src="https://steptodown.com/freepik-downloader/images/steptodown.com123935.jpg" />
-	
+      <img src="https://steptodown.com/freepik-downloader/images/steptodown.com123935.jpg" />
     </div>
     <div class="quiz-links">
       <a href="#" onclick="showQuiz1()">Quiz 1</a>
       <a href="#" onclick="showQuiz2()">Quiz 2</a>
     </div>
     <div id="quizForm">
-      <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfT6W9I7GS6xnPujZgnpJd0j8YtJLG1xdQ-Y6ShO1YZ7-_5Cw/viewform?embedded=true" width="1200" height="1822" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
+      <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfT6W9I7GS6xnPujZgnpJd0j8YtJLG1xdQ-Y6ShO1YZ7-_5Cw/viewform?embedded=true" width="1200" height="1822" frameborder="0">Loading…</iframe>
     </div>
     <div id="quizForm2">
-      <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSd4sleUPDexnAR8eKNnbgP3lUOwINe3S-LTeTiwlfbG73cdkQ/viewform?embedded=true" width="1800" height="377" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
+      <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSd4sleUPDexnAR8eKNnbgP3lUOwINe3S-LTeTiwlfbG73cdkQ/viewform?embedded=true" width="1800" height="377" frameborder="0">Loading…</iframe>
     </div>
   </div>
 
@@ -192,7 +189,7 @@
   <script>
     const userId = localStorage.getItem('loggedInUser');
     if (!userId) {
-      window.location.href = "index.html"; // Redirect to login if not logged in
+      window.location.href = "index.html";
     } else {
       document.getElementById('userDisplay').innerText = userId;
     }
@@ -200,7 +197,7 @@
     function signOut() {
       localStorage.removeItem('loggedInUser');
       localStorage.removeItem('cartItems');
-      window.location.href = "index.html"; // Redirect to login page
+      window.location.href = "index.html";
     }
 
     function goToQuiz1() {

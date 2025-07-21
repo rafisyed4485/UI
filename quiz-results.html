@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Quiz Results - Dream IT Solutions</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: #f5f5f5;
+    }
+
+    header {
+      background-color: #ffffff;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      border-bottom: 1px solid #ccc;
+    }
+
+    .logo {
+      font-size: 1.8rem;
+      font-weight: bold;
+    }
+
+    .logo a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .logo span {
+      font-weight: bold;
+    }
+
+    .nav-actions {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+    }
+
+    .nav-actions .links {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+    }
+
+    .nav-actions a {
+      color: #1877f2;
+      text-decoration: underline;
+      font-size: 0.95rem;
+      cursor: pointer;
+    }
+
+    .welcome {
+      font-size: 0.9rem;
+      color: #555;
+      margin-top: 6px;
+    }
+
+    .results-container {
+      padding: 2rem;
+      max-width: 900px;
+      margin: 3rem auto;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      color: #333;
+      text-align: center;
+    }
+
+    .note {
+      font-size: 1rem;
+      color: #777;
+      text-align: center;
+      margin-top: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <a href="home.html">Dream<span style="color:#00bcd4;">IT</span><span style="color:#ff1744;">Solutions</span></a>
+    </div>
+    <div class="nav-actions">
+      <div class="links">
+        <a href="home.html">Home</a>
+        <a href="controls.html">Controls</a>
+        <a href="quiz-results.html">Quiz Results</a>
+        <a href="#" onclick="signOut()">Sign Out</a>
+      </div>
+      <div class="welcome">Welcome, <span id="userDisplay">User</span>!</div>
+    </div>
+  </header>
+
+  <div class="results-container">
+    <h2>Quiz Results</h2>
+    <p class="note">This section will display your quiz scores and summaries once quiz data integration is completed.</p>
+  </div>
+
+  <script>
+    const userId = localStorage.getItem('loggedInUser');
+    if (!userId) {
+      window.location.href = "index.html";
+    } else {
+      document.getElementById('userDisplay').innerText = userId;
+    }
+
+    function signOut() {
+      localStorage.removeItem('loggedInUser');
+      localStorage.removeItem('cartItems');
+      window.location.href = "index.html";
+    }
+  </script>
+</body>
+</html>
