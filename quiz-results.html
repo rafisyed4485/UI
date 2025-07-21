@@ -3,6 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <title>Quiz Results - Dream IT Solutions</title>
+  <script type="module" src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"></script>
+  <script type="module" src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"></script>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -60,14 +62,14 @@
 
     .results-container {
       padding: 2rem;
-      max-width: 900px;
-      margin: 3rem auto;
+      max-width: 960px;
+      margin: 2rem auto;
       background: white;
       border-radius: 10px;
       box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
 
-    h2 {
+    h2, h3 {
       color: #333;
       text-align: center;
     }
@@ -77,6 +79,41 @@
       color: #777;
       text-align: center;
       margin-top: 1rem;
+    }
+
+    .quiz-section {
+      margin-top: 2rem;
+    }
+
+    .question-card {
+      background: #f9f9f9;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      border-radius: 6px;
+    }
+
+    .question-card input[type="text"] {
+      width: 100%;
+      padding: 6px;
+      margin-top: 5px;
+      margin-bottom: 10px;
+    }
+
+    .option-input {
+      display: flex;
+      gap: 5px;
+      margin-bottom: 6px;
+    }
+
+    .controls {
+      margin-top: 1rem;
+      text-align: center;
+    }
+
+    .controls button {
+      padding: 0.5rem 1rem;
+      margin: 0 5px;
+      cursor: pointer;
     }
   </style>
 </head>
@@ -97,11 +134,85 @@
   </header>
 
   <div class="results-container">
-    <h2>Quiz Results</h2>
-    <p class="note">This section will display your quiz scores and summaries once quiz data integration is completed.</p>
+    <h2>Quiz Panel</h2>
+    <div class="quiz-section" id="quizSection">
+      <!-- Questions and controls will render here -->
+    </div>
+    <div class="controls">
+      <button onclick="addQuestion()">Add Question</button>
+      <button onclick="saveQuiz()">Save Quiz</button>
+    </div>
+    <p class="note">You can add multiple questions with dynamic options and save the quiz to Firebase.</p>
   </div>
 
-  <script>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDo9YP5RX_BRnVygbyBMk2KJzA7gxZbLk0",
+      authDomain: "quizapp-809a3.firebaseapp.com",
+      projectId: "quizapp-809a3",
+      storageBucket: "quizapp-809a3.firebasestorage.app",
+      messagingSenderId: "170687926119",
+      appId: "1:170687926119:web:035d347e88e7e2999e29c2"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    let questionCount = 0;
+
+    function addQuestion() {
+      const container = document.getElementById('quizSection');
+      const card = document.createElement('div');
+      card.className = 'question-card';
+      card.innerHTML = `
+        <label>Question:</label>
+        <input type="text" class="question-text" placeholder="Enter your question">
+        <div class="options">
+          <div class="option-input"><input type="text" placeholder="Option 1"></div>
+          <div class="option-input"><input type="text" placeholder="Option 2"></div>
+        </div>
+        <button onclick="addOption(this)">Add Option</button>
+      `;
+      container.appendChild(card);
+      questionCount++;
+    }
+
+    window.addQuestion = addQuestion;
+
+    window.addOption = (btn) => {
+      const optionsDiv = btn.parentElement.querySelector('.options');
+      const input = document.createElement('div');
+      input.className = 'option-input';
+      input.innerHTML = '<input type="text" placeholder="Another option">';
+      optionsDiv.appendChild(input);
+    };
+
+    window.saveQuiz = async () => {
+      const cards = document.querySelectorAll('.question-card');
+      const quiz = [];
+      cards.forEach(card => {
+        const qText = card.querySelector('.question-text').value;
+        const options = [...card.querySelectorAll('.option-input input')].map(opt => opt.value).filter(v => v);
+        if (qText && options.length > 0) {
+          quiz.push({ question: qText, options });
+        }
+      });
+      if (quiz.length === 0) {
+        alert("Add at least one question with options.");
+        return;
+      }
+      await addDoc(collection(db, "quizzes"), {
+        createdAt: new Date(),
+        questions: quiz,
+        published: false
+      });
+      alert("Quiz saved successfully!");
+      document.getElementById('quizSection').innerHTML = "";
+    };
+
     const userId = localStorage.getItem('loggedInUser');
     if (!userId) {
       window.location.href = "index.html";
@@ -114,6 +225,7 @@
       localStorage.removeItem('cartItems');
       window.location.href = "index.html";
     }
+    window.signOut = signOut;
   </script>
 </body>
 </html>
