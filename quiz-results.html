@@ -2,158 +2,168 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Quiz Results - Dream IT Solutions</title>
+  <title>Quiz Admin - Dream IT Solutions</title>
   <script type="module" src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"></script>
   <script type="module" src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"></script>
   <style>
     body {
       font-family: Arial, sans-serif;
-      margin: 0;
       background: #f5f5f5;
+      margin: 0;
     }
 
     header {
-      background-color: #ffffff;
+      background-color: #fff;
       padding: 1rem 2rem;
       display: flex;
       justify-content: space-between;
-      align-items: flex-start;
+      align-items: center;
       border-bottom: 1px solid #ccc;
     }
 
     .logo {
-      font-size: 1.8rem;
+      font-size: 1.5rem;
       font-weight: bold;
-    }
-
-    .logo a {
-      text-decoration: none;
-      color: inherit;
     }
 
     .logo span {
-      font-weight: bold;
+      color: #00bcd4;
     }
 
-    .nav-actions {
+    .nav {
       display: flex;
-      flex-direction: column;
-      align-items: flex-end;
+      gap: 15px;
     }
 
-    .nav-actions .links {
-      display: flex;
-      gap: 20px;
-      align-items: center;
-    }
-
-    .nav-actions a {
-      color: #1877f2;
-      text-decoration: underline;
+    .nav a {
+      text-decoration: none;
+      color: #007bff;
       font-size: 0.95rem;
-      cursor: pointer;
     }
 
-    .welcome {
-      font-size: 0.9rem;
-      color: #555;
-      margin-top: 6px;
-    }
-
-    .results-container {
-      padding: 2rem;
+    .container {
       max-width: 960px;
       margin: 2rem auto;
-      background: white;
+      background: #fff;
+      padding: 2rem;
       border-radius: 10px;
       box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
 
-    h2, h3 {
-      color: #333;
+    h2 {
       text-align: center;
+      margin-bottom: 1rem;
     }
 
-    .note {
-      font-size: 1rem;
-      color: #777;
-      text-align: center;
-      margin-top: 1rem;
+    .question-block {
+      background: #f9f9f9;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      padding: 1rem;
+      margin-bottom: 1rem;
     }
 
-    .quiz-section {
+    .question-block input[type="text"] {
+      width: 100%;
+      margin: 5px 0;
+      padding: 6px;
+    }
+
+    .btn {
+      padding: 0.5rem 1rem;
+      margin: 5px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .btn-secondary {
+      background-color: #6c757d;
+    }
+
+    .btn-danger {
+      background-color: #dc3545;
+    }
+
+    .quiz-list {
       margin-top: 2rem;
     }
 
-    .question-card {
-      background: #f9f9f9;
+    .quiz-item {
       padding: 1rem;
-      margin-bottom: 1rem;
-      border-radius: 6px;
+      border-bottom: 1px solid #eee;
     }
 
-    .question-card input[type="text"] {
+    .quiz-item h4 {
+      margin: 0 0 0.5rem 0;
+    }
+
+    .published {
+      color: green;
+      font-weight: bold;
+    }
+
+    .unpublished {
+      color: orange;
+    }
+
+    #loginBox {
+      max-width: 400px;
+      margin: 5rem auto;
+      background: white;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    #loginBox input {
       width: 100%;
-      padding: 6px;
-      margin-top: 5px;
-      margin-bottom: 10px;
+      padding: 10px;
+      margin: 0.5rem 0;
     }
 
-    .option-input {
-      display: flex;
-      gap: 5px;
-      margin-bottom: 6px;
-    }
-
-    .controls {
-      margin-top: 1rem;
-      text-align: center;
-    }
-
-    .controls button {
-      padding: 0.5rem 1rem;
-      margin: 0 5px;
-      cursor: pointer;
+    #logoutBtn {
+      background-color: #ff4444;
     }
   </style>
 </head>
 <body>
   <header>
-    <div class="logo">
-      <a href="home.html">Dream<span style="color:#00bcd4;">IT</span><span style="color:#ff1744;">Solutions</span></a>
-    </div>
-    <div class="nav-actions">
-      <div class="links">
-        <a href="home.html">Home</a>
-        <a href="controls.html">Controls</a>
-        <a href="quiz-results.html">Quiz Results</a>
-        <a href="#" onclick="signOut()">Sign Out</a>
-      </div>
-      <div class="welcome">Welcome, <span id="userDisplay">User</span>!</div>
+    <div class="logo">Dream<span>IT</span> Solutions</div>
+    <div class="nav" id="adminNav" style="display: none;">
+      <a href="#" onclick="logout()">Logout</a>
     </div>
   </header>
 
-  <div class="results-container">
-    <h2>Quiz Panel</h2>
-    <div class="quiz-section" id="quizSection">
-      <!-- Questions and controls will render here -->
+  <div class="container" id="loginBox">
+    <h2>Admin Login</h2>
+    <input type="email" id="adminEmail" placeholder="Email">
+    <input type="password" id="adminPassword" placeholder="Password">
+    <button class="btn" onclick="login()">Login</button>
+  </div>
+
+  <div class="container" id="quizPanel" style="display:none;">
+    <h2>Create New Quiz</h2>
+    <div id="quizQuestions"></div>
+    <button class="btn" onclick="addQuestion()">Add Question</button>
+    <button class="btn" onclick="saveQuiz()">Save Quiz</button>
+
+    <div class="quiz-list" id="quizList">
+      <h3>Existing Quizzes</h3>
     </div>
-    <div class="controls">
-      <button onclick="addQuestion()">Add Question</button>
-      <button onclick="saveQuiz()">Save Quiz</button>
-    </div>
-    <p class="note">You can add multiple questions with dynamic options and save the quiz to Firebase.</p>
   </div>
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-    import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    import { getFirestore, collection, addDoc, getDocs, updateDoc, doc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyDo9YP5RX_BRnVygbyBMk2KJzA7gxZbLk0",
       authDomain: "quizapp-809a3.firebaseapp.com",
       projectId: "quizapp-809a3",
-      storageBucket: "quizapp-809a3.firebasestorage.app",
+      storageBucket: "quizapp-809a3.appspot.com",
       messagingSenderId: "170687926119",
       appId: "1:170687926119:web:035d347e88e7e2999e29c2"
     };
@@ -161,71 +171,91 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
-    let questionCount = 0;
-
-    function addQuestion() {
-      const container = document.getElementById('quizSection');
-      const card = document.createElement('div');
-      card.className = 'question-card';
-      card.innerHTML = `
-        <label>Question:</label>
-        <input type="text" class="question-text" placeholder="Enter your question">
+    window.addQuestion = function() {
+      const div = document.createElement('div');
+      div.className = 'question-block';
+      div.innerHTML = `
+        <input type="text" class="qtext" placeholder="Enter Question">
         <div class="options">
-          <div class="option-input"><input type="text" placeholder="Option 1"></div>
-          <div class="option-input"><input type="text" placeholder="Option 2"></div>
+          <input type="text" placeholder="Option 1">
+          <input type="text" placeholder="Option 2">
         </div>
-        <button onclick="addOption(this)">Add Option</button>
+        <button class="btn-secondary btn" onclick="addOption(this)">Add Option</button>
       `;
-      container.appendChild(card);
-      questionCount++;
+      document.getElementById('quizQuestions').appendChild(div);
     }
 
-    window.addQuestion = addQuestion;
+    window.addOption = function(button) {
+      const parent = button.previousElementSibling;
+      const input = document.createElement('input');
+      input.type = 'text';
+      input.placeholder = 'Option';
+      parent.appendChild(input);
+    }
 
-    window.addOption = (btn) => {
-      const optionsDiv = btn.parentElement.querySelector('.options');
-      const input = document.createElement('div');
-      input.className = 'option-input';
-      input.innerHTML = '<input type="text" placeholder="Another option">';
-      optionsDiv.appendChild(input);
-    };
-
-    window.saveQuiz = async () => {
-      const cards = document.querySelectorAll('.question-card');
+    window.saveQuiz = async function() {
+      const blocks = document.querySelectorAll('.question-block');
       const quiz = [];
-      cards.forEach(card => {
-        const qText = card.querySelector('.question-text').value;
-        const options = [...card.querySelectorAll('.option-input input')].map(opt => opt.value).filter(v => v);
-        if (qText && options.length > 0) {
-          quiz.push({ question: qText, options });
-        }
+      blocks.forEach(block => {
+        const question = block.querySelector('.qtext').value;
+        const options = [...block.querySelectorAll('.options input')].map(i => i.value).filter(v => v.trim());
+        if (question && options.length) quiz.push({ question, options });
       });
-      if (quiz.length === 0) {
-        alert("Add at least one question with options.");
-        return;
-      }
+
+      if (!quiz.length) return alert("Please add at least one question.");
+
       await addDoc(collection(db, "quizzes"), {
-        createdAt: new Date(),
         questions: quiz,
-        published: false
+        published: false,
+        createdAt: new Date()
       });
-      alert("Quiz saved successfully!");
-      document.getElementById('quizSection').innerHTML = "";
-    };
 
-    const userId = localStorage.getItem('loggedInUser');
-    if (!userId) {
-      window.location.href = "index.html";
-    } else {
-      document.getElementById('userDisplay').innerText = userId;
+      alert("Quiz saved!");
+      document.getElementById('quizQuestions').innerHTML = '';
+      loadQuizzes();
     }
 
-    function signOut() {
-      localStorage.removeItem('loggedInUser');
-      localStorage.removeItem('cartItems');
-      window.location.href = "index.html";
+    async function loadQuizzes() {
+      const list = document.getElementById('quizList');
+      list.innerHTML = '<h3>Existing Quizzes</h3>';
+      const snap = await getDocs(collection(db, "quizzes"));
+      snap.forEach(docu => {
+        const quiz = docu.data();
+        const div = document.createElement('div');
+        div.className = 'quiz-item';
+        div.innerHTML = `
+          <h4>Quiz ID: ${docu.id}</h4>
+          <p>Status: <span class="${quiz.published ? 'published' : 'unpublished'}">${quiz.published ? 'Published' : 'Unpublished'}</span></p>
+          <button class="btn" onclick="togglePublish('${docu.id}', ${quiz.published})">${quiz.published ? 'Unpublish' : 'Publish'}</button>
+        `;
+        list.appendChild(div);
+      });
     }
-    window.signOut = signOut;
+
+    window.togglePublish = async function(docId, current) {
+      const docRef = doc(db, "quizzes", docId);
+      await updateDoc(docRef, { published: !current });
+      loadQuizzes();
+    }
+
+    window.login = function() {
+      const email = document.getElementById('adminEmail').value;
+      const pass = document.getElementById('adminPassword').value;
+      if (email === "Dreamitsolutions@gmail.com" && pass === "Dream@123") {
+        document.getElementById('loginBox').style.display = 'none';
+        document.getElementById('quizPanel').style.display = 'block';
+        document.getElementById('adminNav').style.display = 'flex';
+        loadQuizzes();
+      } else {
+        alert("Invalid credentials");
+      }
+    }
+
+    window.logout = function() {
+      document.getElementById('loginBox').style.display = 'block';
+      document.getElementById('quizPanel').style.display = 'none';
+      document.getElementById('adminNav').style.display = 'none';
+    }
   </script>
 </body>
 </html>
