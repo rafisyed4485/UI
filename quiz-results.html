@@ -9,7 +9,7 @@
     body {
       font-family: Arial, sans-serif;
       margin: 0;
-      background: #f5f5f5;
+      background: #eef2f5;
     }
 
     header {
@@ -17,7 +17,7 @@
       padding: 1rem 2rem;
       display: flex;
       justify-content: space-between;
-      align-items: flex-start;
+      align-items: center;
       border-bottom: 1px solid #ccc;
     }
 
@@ -44,25 +44,26 @@
     }
 
     .nav-actions a {
-      color: #1877f2;
+      color: #1976d2;
       text-decoration: underline;
       font-size: 0.95rem;
       cursor: pointer;
     }
 
     .welcome {
-      font-size: 0.9rem;
-      color: #555;
-      margin-top: 6px;
+      font-size: 0.85rem;
+      color: #444;
+      margin-top: 4px;
     }
 
     .results-container {
       padding: 2rem;
-      max-width: 960px;
-      margin: 2rem auto;
-      background: white;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      max-width: 1000px;
+      margin: 3rem auto;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+      position: relative;
     }
 
     h2, h3 {
@@ -70,43 +71,92 @@
       text-align: center;
     }
 
-    .note {
-      font-size: 1rem;
-      color: #777;
-      text-align: center;
-      margin-top: 1rem;
-    }
-
     .question-card {
-      background: #f9f9f9;
+      background: #f7f9fc;
       padding: 1rem;
       margin-bottom: 1rem;
-      border-radius: 6px;
-    }
-
-    .option-input {
-      margin-bottom: 6px;
-    }
-
-    .controls, .admin-controls {
-      margin-top: 1rem;
-      text-align: center;
+      border-radius: 8px;
+      border: 1px solid #dde2eb;
     }
 
     .controls button, .admin-controls button {
-      padding: 0.5rem 1rem;
-      margin: 0 5px;
+      padding: 0.6rem 1.2rem;
+      margin: 8px 5px;
+      background-color: #1976d2;
+      color: white;
+      border: none;
+      border-radius: 4px;
       cursor: pointer;
     }
 
-    .quiz-block {
-      margin-bottom: 2rem;
+    .controls button:hover, .admin-controls button:hover {
+      background-color: #125ea7;
     }
 
-    .login-box {
+    .quiz-block {
+      margin-bottom: 2.5rem;
+      padding: 1rem;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+
+    .student-name {
+      padding: 0.4rem;
+      width: 100%;
+      margin-bottom: 1rem;
+      border-radius: 4px;
+      border: 1px solid #bbb;
+    }
+
+    /* Admin login box (modal-like) */
+    #loginBox {
+      display: none;
       position: absolute;
-      top: 10px;
-      right: 20px;
+      top: 80px;
+      right: 30px;
+      background: #ffffff;
+      padding: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      z-index: 1000;
+    }
+
+    #loginBox input {
+      margin-bottom: 10px;
+      padding: 0.4rem;
+      width: 180px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+    }
+
+    #loginBox button {
+      width: 100%;
+      padding: 0.5rem;
+      background: #388e3c;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    #loginBox button:hover {
+      background: #2e7d32;
+    }
+
+    @media (max-width: 768px) {
+      .results-container {
+        margin: 1rem;
+        padding: 1.5rem;
+      }
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .nav-actions {
+        align-items: flex-start;
+        margin-top: 1rem;
+      }
     }
   </style>
 </head>
@@ -119,16 +169,17 @@
       <div class="links">
         <a href="home.html">Home</a>
         <a href="controls.html">Controls</a>
-        <a href="#" onclick="toggleLogin()">Admin Login</a>
-        <a href="#" onclick="signOut()">Sign Out</a>
+        <a onclick="toggleLogin()">Admin Login</a>
+        <a onclick="signOut()">Sign Out</a>
       </div>
       <div class="welcome">Welcome, <span id="userDisplay">Guest</span>!</div>
     </div>
   </header>
 
   <div class="results-container">
+    <!-- Admin Panel -->
     <div id="adminPanel" style="display:none">
-      <h2>Admin Quiz Creator</h2>
+      <h2>Admin - Create a New Quiz</h2>
       <div id="quizSection"></div>
       <div class="admin-controls">
         <button onclick="addQuestion()">Add Question</button>
@@ -136,19 +187,21 @@
       </div>
     </div>
 
+    <!-- Quiz List for Users -->
     <div id="quizList">
       <h2>Take a Quiz</h2>
       <div id="quizzesContainer"></div>
     </div>
+
+    <!-- Login Modal -->
+    <div id="loginBox">
+      <input type="text" id="adminId" placeholder="Admin ID" />
+      <input type="password" id="adminPass" placeholder="Password" />
+      <button onclick="adminLogin()">Login</button>
+    </div>
   </div>
 
-  <!-- Login prompt -->
-  <div id="loginBox" class="login-box" style="display:none">
-    <input type="text" id="adminId" placeholder="Admin ID" />
-    <input type="password" id="adminPass" placeholder="Password" />
-    <button onclick="adminLogin()">Login</button>
-  </div>
-
+  <!-- Firebase Script Logic (same as current) -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
     import { getFirestore, collection, addDoc, getDocs, updateDoc, doc, query, orderBy, where } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
@@ -164,15 +217,14 @@
 
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
-
     let isAdmin = false;
 
-    function toggleLogin() {
-      document.getElementById('loginBox').style.display = 'block';
+    window.toggleLogin = () => {
+      const box = document.getElementById("loginBox");
+      box.style.display = box.style.display === "block" ? "none" : "block";
     }
-    window.toggleLogin = toggleLogin;
 
-    async function adminLogin() {
+    window.adminLogin = () => {
       const id = document.getElementById('adminId').value;
       const pass = document.getElementById('adminPass').value;
       if (id === 'admin' && pass === 'admin123') {
@@ -184,16 +236,14 @@
         alert("Invalid login");
       }
     }
-    window.adminLogin = adminLogin;
 
-    function signOut() {
+    window.signOut = () => {
       isAdmin = false;
       document.getElementById('adminPanel').style.display = 'none';
       document.getElementById('userDisplay').innerText = "Guest";
     }
-    window.signOut = signOut;
 
-    function addQuestion() {
+    window.addQuestion = () => {
       const container = document.getElementById('quizSection');
       const card = document.createElement('div');
       card.className = 'question-card';
@@ -203,13 +253,12 @@
           <input type="text" placeholder="Option 1"><br>
           <input type="text" placeholder="Option 2"><br>
         </div>
-        <button onclick="this.previousElementSibling.insertAdjacentHTML('beforeend', '<input type=\"text\" placeholder=\"Another option\"><br>')">Add Option</button>
+        <button onclick="this.previousElementSibling.insertAdjacentHTML('beforeend', '<input type=&quot;text&quot; placeholder=&quot;Another option&quot;><br>')">Add Option</button>
       `;
       container.appendChild(card);
     }
-    window.addQuestion = addQuestion;
 
-    async function saveQuiz() {
+    window.saveQuiz = async () => {
       const cards = document.querySelectorAll('.question-card');
       const questions = [];
       cards.forEach(card => {
@@ -229,7 +278,6 @@
       document.getElementById('quizSection').innerHTML = "";
       loadPublishedQuizzes();
     }
-    window.saveQuiz = saveQuiz;
 
     async function loadPublishedQuizzes() {
       const q = query(collection(db, "quizzes"), where("published", "==", true), orderBy("createdAt", "desc"));
@@ -243,7 +291,7 @@
         div.className = "quiz-block";
         div.innerHTML = `
           <h3>Quiz</h3>
-          <input type="text" placeholder="Your Name" class="student-name"><br><br>
+          <input type="text" placeholder="Your Name" class="student-name"><br>
           ${quiz.questions.map((q, i) => `
             <div class="question-card">
               <strong>${q.question}</strong><br>
@@ -254,6 +302,7 @@
         container.appendChild(div);
       });
     }
+
     window.submitQuiz = async (btn, quizId) => {
       const parent = btn.parentElement;
       const name = parent.querySelector('.student-name').value;
