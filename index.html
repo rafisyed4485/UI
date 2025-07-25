@@ -2,55 +2,87 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Dream IT Solutions — Login</title>
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Login - Dream IT Solutions</title>
+  <script type="module">
+    // Firebase Authentication Setup
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDo9YP5RX_BRnVygbyBMk2KJzA7gxZbLk0",
+      authDomain: "quizapp-809a3.firebaseapp.com",
+      projectId: "quizapp-809a3",
+      storageBucket: "quizapp-809a3.appspot.com",
+      messagingSenderId: "170687926119",
+      appId: "1:170687926119:web:035d347e88e7e2999e29c2"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    window.login = async function () {
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+      const errorMsg = document.getElementById("error-msg");
+
+      try {
+        await signInWithEmailAndPassword(auth, email, password);
+        window.location.href = "home.html";
+      } catch (error) {
+        errorMsg.textContent = error.message;
+      }
+    };
+  </script>
   <style>
-    body{margin:0;height:100vh;display:flex;justify-content:center;align-items:center;font-family:Arial;}
-    .card{padding:2rem;background:#fff;border-radius:8px;box-shadow:0 4px 12px rgba(0,0,0,0.1);width:320px;}
-    h2{margin-bottom:1rem;color:#1877f2;text-align:center;}
-    input{width:100%;padding:0.75rem;margin:0.5rem 0;border:1px solid #ccc;border-radius:4px;font-size:1rem;}
-    button{width:100%;padding:0.75rem;margin-top:1rem;background:#1877f2;color:#fff;border:none;border-radius:4px;font-size:1rem;cursor:pointer;}
-    button:hover{background:#0f63d6;}
-    .error{color:red;font-size:0.9rem;height:1em;text-align:center;}
+    body {
+      background: linear-gradient(to right, #007bff, #00c6ff);
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    .login-container {
+      width: 360px;
+      margin: 100px auto;
+      padding: 30px;
+      background-color: white;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    }
+    h2 {
+      text-align: center;
+      color: #0056b3;
+    }
+    input[type="email"],
+    input[type="password"] {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0 20px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      background-color: #0056b3;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+    }
+    #error-msg {
+      color: red;
+      margin-bottom: 10px;
+      text-align: center;
+    }
   </style>
 </head>
 <body>
-  <div class="card">
-    <h2>Admin Login</h2>
-    <div class="error" id="err"></div>
-    <input id="email" type="email" placeholder="Email" value="Dreamitsolutions@gmail.com"/>
-    <input id="pwd" type="password" placeholder="Password" value="Dream@123"/>
-    <button id="btn">Login</button>
+  <div class="login-container">
+    <h2>Dream IT Solutions</h2>
+    <div id="error-msg"></div>
+    <input type="email" id="email" placeholder="Email" required />
+    <input type="password" id="password" placeholder="Password" required />
+    <button onclick="login()">Login</button>
   </div>
-
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-    import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-
-    const config = {
-      apiKey: "YOUR_API_KEY",
-      authDomain: "YOUR_PROJECT.firebaseapp.com",
-      projectId: "YOUR_PROJECT_ID",
-      appId: "YOUR_APP_ID"
-    };
-
-    const app = initializeApp(config);
-    const auth = getAuth(app);
-
-    onAuthStateChanged(auth, user => {
-      if (user) {
-        window.location.href = "home.html";
-      }
-    });
-
-    document.getElementById("btn").onclick = () => {
-      const email = document.getElementById("email").value.trim();
-      const pwd = document.getElementById("pwd").value.trim();
-      const errEl = document.getElementById("err");
-      errEl.textContent = "";
-      signInWithEmailAndPassword(auth, email, pwd)
-        .catch(e => errEl.textContent = e.message);
-    };
-  </script>
 </body>
 </html>
