@@ -2,99 +2,55 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Login - Dream IT Solutions</title>
+  <title>Dream IT Solutions — Login</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f5f5f5;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      margin: 0;
-    }
-    .login-container {
-      background: #fff;
-      padding: 2rem 3rem;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-      border-radius: 10px;
-      width: 100%;
-      max-width: 400px;
-    }
-    h2 {
-      margin-bottom: 1rem;
-      color: #1877f2;
-    }
-    input {
-      width: 100%;
-      padding: 0.75rem;
-      margin-bottom: 1rem;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      font-size: 1rem;
-    }
-    button {
-      width: 100%;
-      padding: 0.75rem;
-      background-color: #1877f2;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      font-size: 1rem;
-      cursor: pointer;
-    }
-    button:hover {
-      background-color: #0f63d6;
-    }
-    .error {
-      color: red;
-      font-size: 0.9rem;
-      margin-bottom: 1rem;
-    }
+    body{margin:0;height:100vh;display:flex;justify-content:center;align-items:center;font-family:Arial;}
+    .card{padding:2rem;background:#fff;border-radius:8px;box-shadow:0 4px 12px rgba(0,0,0,0.1);width:320px;}
+    h2{margin-bottom:1rem;color:#1877f2;text-align:center;}
+    input{width:100%;padding:0.75rem;margin:0.5rem 0;border:1px solid #ccc;border-radius:4px;font-size:1rem;}
+    button{width:100%;padding:0.75rem;margin-top:1rem;background:#1877f2;color:#fff;border:none;border-radius:4px;font-size:1rem;cursor:pointer;}
+    button:hover{background:#0f63d6;}
+    .error{color:red;font-size:0.9rem;height:1em;text-align:center;}
   </style>
 </head>
 <body>
-  <div class="login-container">
-    <h2>Login to Dream IT Solutions</h2>
-    <div class="error" id="errorMsg"></div>
-    <input type="email" id="email" placeholder="Email" value="dreamitsolutions@gmail.com" />
-    <input type="password" id="password" placeholder="Password" value="Dream@123" />
-    <button onclick="login()">Login</button>
+  <div class="card">
+    <h2>Admin Login</h2>
+    <div class="error" id="err"></div>
+    <input id="email" type="email" placeholder="Email" value="Dreamitsolutions@gmail.com"/>
+    <input id="pwd" type="password" placeholder="Password" value="Dream@123"/>
+    <button id="btn">Login</button>
   </div>
 
-  <!-- Firebase -->
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js"></script>
-  <script>
-    const firebaseConfig = {
-      apiKey: "FIREBASE_API_KEY",
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+    const config = {
+      apiKey: "YOUR_API_KEY",
       authDomain: "YOUR_PROJECT.firebaseapp.com",
       projectId: "YOUR_PROJECT_ID",
       appId: "YOUR_APP_ID"
     };
 
-    firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
+    const app = initializeApp(config);
+    const auth = getAuth(app);
 
-    function login() {
-      const email = document.getElementById("email").value.trim();
-      const password = document.getElementById("password").value.trim();
-      const errorMsg = document.getElementById("errorMsg");
-      errorMsg.textContent = "";
-
-      auth.signInWithEmailAndPassword(email, password)
-        .then(() => {
-          window.location.href = "home.html";
-        })
-        .catch(error => {
-          errorMsg.textContent = error.message;
-        });
-    }
-
-    // Redirect if already logged in
-    auth.onAuthStateChanged(user => {
-      if (user) window.location.href = "home.html";
+    onAuthStateChanged(auth, user => {
+      if (user) {
+        window.location.href = "home.html";
+      }
     });
+
+    document.getElementById("btn").onclick = () => {
+      const email = document.getElementById("email").value.trim();
+      const pwd = document.getElementById("pwd").value.trim();
+      const errEl = document.getElementById("err");
+      errEl.textContent = "";
+      signInWithEmailAndPassword(auth, email, pwd)
+        .catch(e => errEl.textContent = e.message);
+    };
   </script>
 </body>
 </html>
