@@ -2,8 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Dream IT Solutions - Dashboard</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Dream IT Solutions</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -12,86 +11,151 @@
     }
 
     header {
-      background-color: #0056b3;
-      color: white;
+      background-color: #ffffff;
       padding: 1rem 2rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .brand {
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: #0056b3;
     }
 
     nav a {
-      color: white;
-      margin: 0 1rem;
+      margin-left: 20px;
       text-decoration: none;
+      color: #333;
       font-weight: bold;
-    }
-
-    .slideshow {
-      max-width: 100%;
-      height: 360px;
-      overflow: hidden;
       position: relative;
     }
 
-    .slideshow iframe {
-      width: 100%;
-      height: 100%;
-      border: none;
+    nav a:hover {
+      color: #007bff;
     }
 
-    .section {
+    section {
       padding: 20px;
+      display: none;
     }
 
-    .btn-signout {
-      background: red;
+    .quiz-links {
+      display: flex;
+      justify-content: center;
+      gap: 50px;
+      margin-bottom: 30px;
+    }
+
+    .quiz-links a {
+      text-decoration: none;
+      font-size: 24px;
+      font-weight: bold;
+      color: #007bff;
+      position: relative;
+    }
+
+    .quiz-links a::after {
+      content: '👉';
+      position: absolute;
+      right: -30px;
+      animation: blink 1s infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+
+    .quiz-frame {
+      margin: 10px auto;
+      max-width: 700px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      background-color: white;
+      padding: 10px;
+      border-radius: 10px;
+    }
+
+    iframe {
+      width: 100%;
+      height: 800px;
       border: none;
-      padding: 8px 16px;
+      border-radius: 10px;
+    }
+
+    .logout-btn {
+      background: #ff4d4d;
       color: white;
-      border-radius: 4px;
+      padding: 8px 16px;
+      border: none;
+      border-radius: 8px;
       cursor: pointer;
+      font-weight: bold;
     }
 
-    .btn-signout:hover {
-      background: darkred;
-    }
-
-    .user-info {
-      font-size: 14px;
-      margin-right: 1rem;
+    .logout-btn:hover {
+      background: #cc0000;
     }
   </style>
-
-  <!-- Firebase SDK -->
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 </head>
 <body>
+
   <header>
-    <div><strong>Dream IT Solutions</strong></div>
+    <div class="brand">Dream IT Solutions</div>
     <nav>
-      <a href="products.html">Products</a>
-      <a href="quiz-results.html">Quiz</a>
-      <a href="controls.html">Controls</a>
-      <a href="cart.html">Cart</a>
+      <a href="#" onclick="showSection('productSection')">Products</a>
+      <a href="#quizForm1" onclick="showSection('quizSection'); showQuiz('quiz1')">Quiz</a>
+      <a href="#" onclick="showSection('controlsSection')">Controls</a>
+      <a href="#" onclick="showSection('cartSection')">Cart</a>
+      <button class="logout-btn" onclick="logout()">Sign Out</button>
     </nav>
-    <div style="display: flex; align-items: center;">
-      <span class="user-info" id="userDisplay"></span>
-      <button class="btn-signout" onclick="signOut()">Sign Out</button>
-    </div>
   </header>
 
-  <div class="slideshow">
-    <iframe src="https://www.youtube.com/embed/3GgVUK9JN1Y?autoplay=1&mute=1&loop=1&playlist=3GgVUK9JN1Y"></iframe>
-  </div>
+  <!-- Products Section -->
+  <section id="productSection">
+    <h2>Our Products</h2>
+    <p>Here are some amazing products we offer...</p>
+  </section>
 
-  <div class="section">
-    <h2>Welcome to Dream IT Solutions!</h2>
-    <p>Explore the best tech products, weekly quizzes, and a dynamic controls panel.</p>
-  </div>
+  <!-- Quiz Section -->
+  <section id="quizSection">
+    <div class="quiz-links">
+      <a href="#quizForm1" onclick="showQuiz('quiz1')">Quiz 1</a>
+      <a href="#quizForm2" onclick="showQuiz('quiz2')">Quiz 2</a>
+    </div>
 
-  <script>
+    <div class="quiz-frame" id="quiz1">
+      <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSd4sleUPDexnAR8eKNnbgP3lUOwINe3S-LTeTiwlfbG73cdkQ/viewform?embedded=true">Loading…</iframe>
+    </div>
+
+    <div class="quiz-frame" id="quiz2" style="display: none;">
+      <div class="strawpoll-embed" style="height: 800px; width: 100%;">
+        <iframe title="StrawPoll Embed" src="https://strawpoll.com/embed/e2naXJBKMyB"
+          style="width: 100%; height: 100%;" frameborder="0"
+          allowfullscreen allowtransparency>
+        </iframe>
+      </div>
+    </div>
+  </section>
+
+  <!-- Controls Section -->
+  <section id="controlsSection">
+    <h2>Controls</h2>
+    <p>This is where your dynamic table or controls will appear.</p>
+  </section>
+
+  <!-- Cart Section -->
+  <section id="cartSection">
+    <h2>Your Cart</h2>
+    <p>No items in your cart.</p>
+  </section>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
     const firebaseConfig = {
       apiKey: "AIzaSyDo9YP5RX_BRnVygbyBMk2KJzA7gxZbLk0",
       authDomain: "quizapp-809a3.firebaseapp.com",
@@ -101,22 +165,59 @@
       appId: "1:170687926119:web:035d347e88e7e2999e29c2"
     };
 
-    firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
 
-    auth.onAuthStateChanged(user => {
+    function showSection(sectionId) {
+      const sections = ['productSection', 'quizSection', 'controlsSection', 'cartSection'];
+      sections.forEach(id => {
+        document.getElementById(id).style.display = (id === sectionId) ? 'block' : 'none';
+      });
+
+      if (sectionId === 'quizSection') {
+        setTimeout(() => {
+          const quiz1 = document.getElementById("quiz1");
+          if (quiz1) quiz1.scrollIntoView({ behavior: "smooth" });
+        }, 300);
+      }
+    }
+
+    function showQuiz(quizId) {
+      const quiz1 = document.getElementById("quiz1");
+      const quiz2 = document.getElementById("quiz2");
+      if (quizId === "quiz1") {
+        quiz1.style.display = "block";
+        quiz2.style.display = "none";
+      } else {
+        quiz1.style.display = "none";
+        quiz2.style.display = "block";
+      }
+    }
+
+    window.logout = function () {
+      signOut(auth).then(() => {
+        window.location.href = "index.html";
+      });
+    };
+
+    onAuthStateChanged(auth, user => {
       if (!user) {
         window.location.href = "index.html";
-      } else {
-        document.getElementById("userDisplay").textContent = user.email;
       }
     });
 
-    function signOut() {
-      auth.signOut().then(() => {
-        window.location.href = "index.html";
-      });
-    }
+    window.onload = function () {
+      if (window.location.hash.includes("quizForm1")) {
+        showSection("quizSection");
+        showQuiz("quiz1");
+      } else if (window.location.hash.includes("quizForm2")) {
+        showSection("quizSection");
+        showQuiz("quiz2");
+      } else {
+        showSection("productSection");
+      }
+    };
   </script>
+
 </body>
 </html>
