@@ -99,6 +99,7 @@
       appId: "1:170687926119:web:035d347e88e7e2999e29c2"
     };
 
+    // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
 
@@ -109,10 +110,12 @@
 
       auth.signInWithEmailAndPassword(email, password)
         .then(() => {
-          window.location.href = "home.html"; // redirect after login
+          // Success
+          window.location.href = "home.html";
         })
         .catch(error => {
-          errorEl.textContent = error.message;
+          console.error("Login failed:", error.code, error.message); // Debug
+          errorEl.textContent = "Login failed: " + error.message;
         });
     }
   </script>
