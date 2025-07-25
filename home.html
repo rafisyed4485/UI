@@ -71,7 +71,8 @@
       box-shadow: 0 0 0 2px #ffffff;
     }
 
-    .slideshow img {
+    .slideshow img,
+    .slideshow iframe {
       width: 100%;
       height: 100%;
       object-fit: cover;
@@ -79,10 +80,7 @@
       position: absolute;
       top: 0;
       left: 0;
-    }
-
-    .slideshow img.active {
-      display: block;
+      border: none;
     }
 
     .quiz-links {
@@ -167,15 +165,18 @@
 
   <div class="slideshow-wrapper" id="slideshowSection">
     <div class="slideshow" id="slideshow">
-      <img src="https://steptodown.com/freepik-downloader/images/steptodown.com480872.jpg" class="active" />
+      <img src="https://steptodown.com/freepik-downloader/images/steptodown.com480872.jpg" />
       <img src="https://steptodown.com/freepik-downloader/images/steptodown.com570341.jpg" />
       <img src="https://wallpapercat.com/w/middle-retina/9/3/2/5817846-3840x2160-desktop-hd-motivational-background-image.jpg" />
       <img src="https://steptodown.com/freepik-downloader/images/steptodown.com123935.jpg" />
+      <iframe src="https://drive.google.com/file/d/1yKzvr6ciW8fD4AQ0TH6H4sJXE03AtuwK/preview" allow="autoplay"></iframe>
     </div>
+
     <div class="quiz-links">
       <a href="#" onclick="showQuiz1()">Quiz 1</a>
       <a href="#" onclick="showQuiz2()">Quiz 2</a>
     </div>
+
     <div id="quizForm">
       <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfT6W9I7GS6xnPujZgnpJd0j8YtJLG1xdQ-Y6ShO1YZ7-_5Cw/viewform?embedded=true" width="1200" height="1822" frameborder="0">Loading…</iframe>
     </div>
@@ -302,12 +303,20 @@
 
     updateCartCount();
 
-    const slides = document.querySelectorAll('#slideshow img');
+    // Updated Slideshow for both IMG and IFRAME
+    const slides = document.querySelectorAll('#slideshow > *');
     let currentSlide = 0;
+
+    function showSlide(index) {
+      slides.forEach(slide => slide.style.display = 'none');
+      slides[index].style.display = 'block';
+    }
+
+    showSlide(currentSlide);
+
     setInterval(() => {
-      slides[currentSlide].classList.remove('active');
       currentSlide = (currentSlide + 1) % slides.length;
-      slides[currentSlide].classList.add('active');
+      showSlide(currentSlide);
     }, 3000);
   </script>
 
