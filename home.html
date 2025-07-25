@@ -246,16 +246,16 @@
         const price = (Math.floor(Math.random() * 500) + 300) + ".00";
         const img = productImages[name] || "https://via.placeholder.com/60";
         const button = isCart
-          ? <button onclick="removeFromCart('${name}')">Remove</button>
-          : <button onclick="addToCart('${name}')">Add to Cart</button>;
-        const productHTML = 
+          ? `<button onclick="removeFromCart('${name}')">Remove</button>`
+          : `<button onclick="addToCart('${name}')">Add to Cart</button>`;
+        const productHTML = `
           <div class="product">
             <img src="${img}" alt="${name}">
             <p><strong>${name}</strong></p>
             <p>$${price}</p>
             ${button}
           </div>
-        ;
+        `;
         container.insertAdjacentHTML('beforeend', productHTML);
       });
     }
@@ -266,9 +266,9 @@
         cart.push(product);
         localStorage.setItem('cartItems', JSON.stringify(cart));
         updateCartCount();
-        alert(${product} added to cart!);
+        alert(`${product} added to cart!`);
       } else {
-        alert(${product} is already in cart.);
+        alert(`${product} is already in cart.`);
       }
     }
 
