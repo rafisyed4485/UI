@@ -1,191 +1,242 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Dream IT Solutions</title>
+  <meta charset="UTF-8">
+  <title>Login Page</title>
   <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
     body {
       font-family: Arial, sans-serif;
-      margin: 0;
-      background: #fff;
-    }
-
-    header {
-      background-color: #ffffff;
-      padding: 1rem 2rem;
+      background-color: #f0f2f5;
+      height: 100vh;
       display: flex;
-      justify-content: space-between;
+      flex-direction: column;
+    }
+
+    /* Top left logo section */
+    .top-bar {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 20px 40px;
+    }
+
+    .logo-text {
+      font-size: 28px;
+      font-weight: bold;
+      display: flex;
+      gap: 4px;
       align-items: center;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     }
 
-    .brand {
-      font-size: 1.8rem;
+    .logo-text .black {
+      color: #000000;
+    }
+
+    .logo-text .blue {
+      color: #00bcd4;
+    }
+
+    .logo-text .pink {
+      color: #ff1744;
+    }
+
+    .tagline {
+      font-size: 16px;
       font-weight: bold;
-      color: #0056b3;
+      color: #444;
+      margin-top: 6px;
+      font-style: italic;
+      letter-spacing: 0.5px;
     }
 
-    nav a {
-      margin-left: 20px;
-      text-decoration: none;
-      color: #333;
-      font-weight: bold;
-      position: relative;
+    .wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex: 1;
     }
 
-    nav a:hover {
-      color: #007bff;
+    .login-container {
+      background-color: white;
+      padding: 3rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
+      width: 400px;
+      text-align: center;
+      z-index: 1;
     }
 
-    section {
-      padding: 20px;
+    .hidden {
       display: none;
     }
 
-    /* Quiz Styling */
-    .quiz-links {
-      display: flex;
-      justify-content: center;
-      gap: 50px;
-      margin-bottom: 30px;
+    input {
+      width: 100%;
+      padding: 14px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 16px;
     }
 
-    .quiz-links a {
+    button {
+      width: 100%;
+      padding: 14px;
+      background-color: #1877f2;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    button:disabled {
+      background-color: #a3c2f0;
+      cursor: not-allowed;
+    }
+
+    .forgot-password {
+      margin-top: 14px;
+      display: block;
+      color: #1877f2;
       text-decoration: none;
+      font-size: 1rem;
+    }
+
+    .forgot-password.disabled {
+      pointer-events: none;
+      color: gray;
+      text-decoration: none;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.4);
+      overflow-y: auto;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+      background-color: #fff;
+      margin: auto;
+      padding: 20px;
+      border-radius: 10px;
+      width: 90%;
+      max-width: 400px;
+      position: relative;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 8px;
+      right: 12px;
       font-size: 24px;
       font-weight: bold;
-      color: #007bff;
-      position: relative;
+      color: #aaa;
+      cursor: pointer;
     }
 
-    .quiz-links a::after {
-      content: '👉';
-      position: absolute;
-      right: -30px;
-      animation: blink 1s infinite;
-    }
-
-    @keyframes blink {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0; }
-    }
-
-    .quiz-frame {
-      margin: 10px auto;
-      max-width: 700px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-      background-color: white;
-      padding: 10px;
-      border-radius: 10px;
-    }
-
-    iframe {
-      width: 100%;
-      height: 800px;
-      border: none;
-      border-radius: 10px;
-    }
-
-    .strawpoll-embed {
-      height: 800px !important;
+    .close-btn:hover {
+      color: black;
     }
   </style>
 </head>
 <body>
 
-  <header>
-    <div class="brand">Dream IT Solutions</div>
-    <nav>
-      <a href="#" onclick="showSection('productSection')">Products</a>
-      <a href="#quizForm1" onclick="showSection('quizSection'); showQuiz('quiz1')">Quiz</a>
-      <a href="#" onclick="showSection('controlsSection')">Controls</a>
-      <a href="#" onclick="showSection('cartSection')">Cart</a>
-    </nav>
-  </header>
-
-  <!-- Products Section -->
-  <section id="productSection">
-    <h2>Our Products</h2>
-    <p>Here are some amazing products we offer...</p>
-    <!-- Add product items here -->
-  </section>
-
-  <!-- Quiz Section -->
-  <section id="quizSection">
-    <div class="quiz-links">
-      <a href="#quizForm1" onclick="showQuiz('quiz1')">Quiz 1</a>
-      <a href="#quizForm2" onclick="showQuiz('quiz2')">Quiz 2</a>
+  <!-- Top-left logo and description -->
+  <div class="top-bar">
+    <div class="logo-text">
+      <span class="black">Dream</span><span class="blue">IT</span><span class="pink">Solutions</span>
     </div>
+    <div class="tagline">If you can do it you can make it.</div>
+  </div>
 
-    <div class="quiz-frame" id="quiz1">
-      <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSd4sleUPDexnAR8eKNnbgP3lUOwINe3S-LTeTiwlfbG73cdkQ/viewform?embedded=true">
-        Loading…
-      </iframe>
-    </div>
+  <!-- Login section only -->
+  <div class="wrapper">
+    <div class="login-container">
+      <h2 style="font-size: 24px; margin-bottom: 20px;">Login</h2>
 
-    <div class="quiz-frame" id="quiz2" style="display: none;">
-      <div class="strawpoll-embed" id="strawpoll_e2naXJBKMyB" style="height: 800px; width: 100%; display: flex; flex-direction: column;">
-        <iframe title="StrawPoll Embed" id="strawpoll_iframe_e2naXJBKMyB" src="https://strawpoll.com/embed/e2naXJBKMyB"
-          style="width: 100%; flex-grow: 1;" frameborder="0"
-          allowfullscreen allowtransparency>
-          Loading...
-        </iframe>
-        <script async src="https://cdn.strawpoll.com/dist/widgets.js" charset="utf-8"></script>
+      <div id="inputFields">
+        <input type="text" id="userId" placeholder="Email (@gmail.com)">
+        <input type="password" id="password" placeholder="Password" disabled>
+      </div>
+
+      <div id="loginControls">
+        <button id="loginBtn" disabled onclick="login()">Login</button>
+        <a href="forgot-password.html" id="forgotLink" class="forgot-password disabled">Forgot Password?</a>
       </div>
     </div>
-  </section>
+  </div>
 
-  <!-- Controls Section -->
-  <section id="controlsSection">
-    <h2>Controls</h2>
-    <p>This is where your dynamic table or controls will appear.</p>
-    <!-- Your control table goes here -->
-  </section>
-
-  <!-- Cart Section -->
-  <section id="cartSection">
-    <h2>Your Cart</h2>
-    <p>No items in your cart.</p>
-    <!-- You can dynamically load cart items here -->
-  </section>
+  <!-- Signup Modal -->
+  <div id="signupModal" class="modal">
+    <div class="modal-content">
+      <span class="close-btn" onclick="closeModal()">&times;</span>
+      <h2>Sign Up</h2>
+      <input type="text" placeholder="Email">
+      <input type="password" placeholder="Password">
+      <input type="password" placeholder="Confirm Password">
+      <button>Sign Up</button>
+    </div>
+  </div>
 
   <script>
-    function showSection(sectionId) {
-      const sections = ['productSection', 'quizSection', 'controlsSection', 'cartSection'];
-      sections.forEach(id => {
-        document.getElementById(id).style.display = (id === sectionId) ? 'block' : 'none';
-      });
+    const userId = document.getElementById('userId');
+    const password = document.getElementById('password');
+    const loginBtn = document.getElementById('loginBtn');
+    const forgotLink = document.getElementById('forgotLink');
+    const loginControls = document.getElementById('loginControls');
+    const inputFields = document.getElementById('inputFields');
+    const modal = document.getElementById('signupModal');
 
-      if (sectionId === 'quizSection') {
-        setTimeout(() => {
-          const quiz1 = document.getElementById("quiz1");
-          if (quiz1) quiz1.scrollIntoView({ behavior: "smooth" });
-        }, 300);
-      }
+    function validateInputs() {
+      const userVal = userId.value.trim();
+      const passVal = password.value.trim();
+      const isEmailValid = userVal.endsWith('@gmail.com');
+      const isPasswordValid = /[A-Za-z]/.test(passVal) && /\d/.test(passVal);
+
+      password.disabled = !isEmailValid;
+      loginBtn.disabled = !(isEmailValid && isPasswordValid);
+      forgotLink.classList.toggle('disabled', !isEmailValid);
     }
 
-    function showQuiz(quizId) {
-      const quiz1 = document.getElementById("quiz1");
-      const quiz2 = document.getElementById("quiz2");
-      if (quizId === "quiz1") {
-        quiz1.style.display = "block";
-        quiz2.style.display = "none";
-      } else {
-        quiz1.style.display = "none";
-        quiz2.style.display = "block";
-      }
+    userId.addEventListener('input', validateInputs);
+    password.addEventListener('input', validateInputs);
+
+    function login() {
+      localStorage.setItem('loggedInUser', userId.value.trim());
+      window.location.href = "home.html";
     }
 
-    // On load, show quiz section if hash matches
-    window.onload = function () {
-      if (window.location.hash.includes("quizForm1")) {
-        showSection("quizSection");
-        showQuiz("quiz1");
-      } else if (window.location.hash.includes("quizForm2")) {
-        showSection("quizSection");
-        showQuiz("quiz2");
-      }
-    };
+    function showModal() {
+      modal.style.display = 'flex';
+      loginControls.classList.add('hidden');
+      inputFields.classList.add('hidden');
+    }
+
+    function closeModal() {
+      modal.style.display = 'none';
+      loginControls.classList.remove('hidden');
+      inputFields.classList.remove('hidden');
+    }
+
+    // Optional: Auto show signup modal every 60 seconds
+    setInterval(showModal, 60000);
   </script>
 
 </body>
