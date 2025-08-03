@@ -226,6 +226,12 @@
       document.getElementById('quizForm2').style.display = 'block';
       document.getElementById('quizForm2').scrollIntoView({ behavior: 'smooth' });
     }
+	function showQuiz3() {
+      document.getElementById('productContainer').innerHTML = '';
+      document.getElementById('quizForm').style.display = 'none';
+      document.getElementById('quizForm2').style.display = 'block';
+      document.getElementById('quizForm2').scrollIntoView({ behavior: 'smooth' });
+    }
 
     const productList = [
       "iPhone 14", "Galaxy S23", "Pixel 7", "OnePlus 11", "Xiaomi 13", "Motorola Edge", "Nokia XR20"
@@ -245,6 +251,7 @@
       document.getElementById('slideshowSection').style.display = 'none';
       document.getElementById('quizForm').style.display = 'none';
       document.getElementById('quizForm2').style.display = 'none';
+	  document.getElementById('quizForm3').style.display = 'none';
       const container = document.getElementById('productContainer');
       container.innerHTML = "";
       products.forEach(name => {
@@ -289,6 +296,7 @@
       document.getElementById('slideshowSection').style.display = 'none';
       document.getElementById('quizForm').style.display = 'none';
       document.getElementById('quizForm2').style.display = 'none';
+	     document.getElementById('quizForm3').style.display = 'none';
       const cart = JSON.parse(localStorage.getItem('cartItems')) || [];
       const container = document.getElementById('productContainer');
       container.innerHTML = "";
