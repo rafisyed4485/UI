@@ -178,16 +178,12 @@
     <div class="quiz-links">
       <a href="#" onclick="showQuiz1()">Quiz 1</a>
       <a href="#" onclick="showQuiz2()">Quiz 2</a>
-	   <a href="#" onclick="showQuiz2()">Quiz 3</a>
     </div>
     <div id="quizForm">
       <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfT6W9I7GS6xnPujZgnpJd0j8YtJLG1xdQ-Y6ShO1YZ7-_5Cw/viewform?embedded=true" width="1200" height="1822" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
     </div>
     <div id="quizForm2">
       <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSd4sleUPDexnAR8eKNnbgP3lUOwINe3S-LTeTiwlfbG73cdkQ/viewform?embedded=true" width="1800" height="377" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
-    </div>
-	<div id="quizForm3">
-      <iframe src="<iframe src="<iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfda11TEoQetlOEbwbuBGS3o7f2cc5gxFv8hMnGPLrBr5AcMQ/viewform?embedded=true" width="640" height="460" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>" width="640" height="460" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>" width="1800" height="377" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
     </div>
   </div>
 
@@ -226,12 +222,6 @@
       document.getElementById('quizForm2').style.display = 'block';
       document.getElementById('quizForm2').scrollIntoView({ behavior: 'smooth' });
     }
-	function showQuiz3() {
-      document.getElementById('productContainer').innerHTML = '';
-      document.getElementById('quizForm').style.display = 'none';
-      document.getElementById('quizForm2').style.display = 'block';
-      document.getElementById('quizForm2').scrollIntoView({ behavior: 'smooth' });
-    }
 
     const productList = [
       "iPhone 14", "Galaxy S23", "Pixel 7", "OnePlus 11", "Xiaomi 13", "Motorola Edge", "Nokia XR20"
@@ -251,7 +241,6 @@
       document.getElementById('slideshowSection').style.display = 'none';
       document.getElementById('quizForm').style.display = 'none';
       document.getElementById('quizForm2').style.display = 'none';
-	  document.getElementById('quizForm3').style.display = 'none';
       const container = document.getElementById('productContainer');
       container.innerHTML = "";
       products.forEach(name => {
@@ -296,7 +285,6 @@
       document.getElementById('slideshowSection').style.display = 'none';
       document.getElementById('quizForm').style.display = 'none';
       document.getElementById('quizForm2').style.display = 'none';
-	     document.getElementById('quizForm3').style.display = 'none';
       const cart = JSON.parse(localStorage.getItem('cartItems')) || [];
       const container = document.getElementById('productContainer');
       container.innerHTML = "";
