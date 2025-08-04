@@ -136,7 +136,7 @@
       background-color: #0f63d6;
     }
 
-    #quizForm, #quizForm2 {
+    #quizForm, #quizForm2, #quizForm3 {
       padding: 2rem;
       background: #f9f9f9;
       margin-top: 2rem;
@@ -154,13 +154,12 @@
     </div>
     <div class="nav-actions">
       <div class="links">
-  <a href="#" onclick="renderProducts(productList)">All Products</a>
-  <a href="#" onclick="showCartProducts()">Cart (<span id="cartCount">0</span>)</a>
-  <a href="#" onclick="goToQuiz1()">Quiz</a>
-  <a href="controls.html">Controls</a>
-  <a href="#" onclick="signOut()">Sign Out</a>
-</div>
-
+        <a href="#" onclick="renderProducts(productList)">All Products</a>
+        <a href="#" onclick="showCartProducts()">Cart (<span id="cartCount">0</span>)</a>
+        <a href="#" onclick="goToQuiz1()">Quiz</a>
+        <a href="controls.html">Controls</a>
+        <a href="#" onclick="signOut()">Sign Out</a>
+      </div>
       <div class="welcome">
         Welcome, <span id="userDisplay">User</span>!
       </div>
@@ -169,21 +168,26 @@
 
   <div class="slideshow-wrapper" id="slideshowSection">
     <div class="slideshow" id="slideshow">
- 
       <img src="https://i.etsystatic.com/17780762/r/il/b94ac6/2657518102/il_1140xN.2657518102_72iw.jpg" />
       <img src="https://wallpapercat.com/w/middle-retina/9/3/2/5817846-3840x2160-desktop-hd-motivational-background-image.jpg" />
-  	<img src="https://blog.attendancebot.com/wp-content/uploads/2021/05/Motivational-Quote-for-Work-by-Gandhi-1024x576.jpg" />
-	
+      <img src="https://blog.attendancebot.com/wp-content/uploads/2021/05/Motivational-Quote-for-Work-by-Gandhi-1024x576.jpg" />
     </div>
     <div class="quiz-links">
       <a href="#" onclick="showQuiz1()">Quiz 1</a>
       <a href="#" onclick="showQuiz2()">Quiz 2</a>
+      <a href="#" onclick="showQuiz3()">Quiz 3</a>
     </div>
+
     <div id="quizForm">
       <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfT6W9I7GS6xnPujZgnpJd0j8YtJLG1xdQ-Y6ShO1YZ7-_5Cw/viewform?embedded=true" width="1200" height="1822" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
     </div>
+
     <div id="quizForm2">
       <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSd4sleUPDexnAR8eKNnbgP3lUOwINe3S-LTeTiwlfbG73cdkQ/viewform?embedded=true" width="1800" height="377" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
+    </div>
+
+    <div id="quizForm3">
+      <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfda11TEoQetlOEbwbuBGS3o7f2cc5gxFv8hMnGPLrBr5AcMQ/viewform?embedded=true" width="640" height="6878" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
     </div>
   </div>
 
@@ -192,7 +196,7 @@
   <script>
     const userId = localStorage.getItem('loggedInUser');
     if (!userId) {
-      window.location.href = "index.html"; // Redirect to login if not logged in
+      window.location.href = "index.html";
     } else {
       document.getElementById('userDisplay').innerText = userId;
     }
@@ -200,27 +204,39 @@
     function signOut() {
       localStorage.removeItem('loggedInUser');
       localStorage.removeItem('cartItems');
-      window.location.href = "index.html"; // Redirect to login page
+      window.location.href = "index.html";
     }
 
     function goToQuiz1() {
-      document.getElementById('quizForm').style.display = 'none';
-      document.getElementById('quizForm2').style.display = 'none';
+      hideAllQuizForms();
       document.querySelector('.quiz-links').scrollIntoView({ behavior: 'smooth' });
     }
 
     function showQuiz1() {
       document.getElementById('productContainer').innerHTML = '';
+      hideAllQuizForms();
       document.getElementById('quizForm').style.display = 'block';
-      document.getElementById('quizForm2').style.display = 'none';
       document.getElementById('quizForm').scrollIntoView({ behavior: 'smooth' });
     }
 
     function showQuiz2() {
       document.getElementById('productContainer').innerHTML = '';
-      document.getElementById('quizForm').style.display = 'none';
+      hideAllQuizForms();
       document.getElementById('quizForm2').style.display = 'block';
       document.getElementById('quizForm2').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function showQuiz3() {
+      document.getElementById('productContainer').innerHTML = '';
+      hideAllQuizForms();
+      document.getElementById('quizForm3').style.display = 'block';
+      document.getElementById('quizForm3').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function hideAllQuizForms() {
+      document.getElementById('quizForm').style.display = 'none';
+      document.getElementById('quizForm2').style.display = 'none';
+      document.getElementById('quizForm3').style.display = 'none';
     }
 
     const productList = [
@@ -238,9 +254,8 @@
     };
 
     function renderProducts(products, isCart = false) {
+      hideAllQuizForms();
       document.getElementById('slideshowSection').style.display = 'none';
-      document.getElementById('quizForm').style.display = 'none';
-      document.getElementById('quizForm2').style.display = 'none';
       const container = document.getElementById('productContainer');
       container.innerHTML = "";
       products.forEach(name => {
@@ -282,9 +297,8 @@
     }
 
     function showCartProducts() {
+      hideAllQuizForms();
       document.getElementById('slideshowSection').style.display = 'none';
-      document.getElementById('quizForm').style.display = 'none';
-      document.getElementById('quizForm2').style.display = 'none';
       const cart = JSON.parse(localStorage.getItem('cartItems')) || [];
       const container = document.getElementById('productContainer');
       container.innerHTML = "";
