@@ -117,7 +117,7 @@
     .product button:hover {
       background-color: #0f63d6;
     }
-    #quizForm, #quizForm2, #quizForm3, #quizForm4 {
+    #quizForm, #quizForm2, #quizForm3, #quizForm4, #quizForm5 {
       padding: 2rem;
       background: #f9f9f9;
       margin-top: 2rem;
@@ -158,6 +158,7 @@
       <a href="#" onclick="showQuiz2()">Quiz 2</a>
       <a href="#" onclick="showQuiz3()">Quiz 3</a>
       <a href="#" onclick="showQuiz4()">Quiz 4</a>
+      <a href="#" onclick="showQuiz5()">Quiz 5</a>
     </div>
 
     <div id="quizForm">
@@ -174,6 +175,10 @@
 
     <div id="quizForm4">
       <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSei4VIoHr-Pg4nKsXmzLGLLYI7N3nfvnWRuPfSCUUqNtKgArQ/viewform?embedded=true" width="640" height="5419" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
+    </div>
+
+    <div id="quizForm5">
+      <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSeolKgcwtd12xF2Hbg2XU9GoRYVymirO756aPPjTGmb-DKMdg/viewform?embedded=true" width="640" height="6892" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
     </div>
   </div>
 
@@ -226,11 +231,19 @@
       document.getElementById('quizForm4').scrollIntoView({ behavior: 'smooth' });
     }
 
+    function showQuiz5() {
+      document.getElementById('productContainer').innerHTML = '';
+      hideAllQuizForms();
+      document.getElementById('quizForm5').style.display = 'block';
+      document.getElementById('quizForm5').scrollIntoView({ behavior: 'smooth' });
+    }
+
     function hideAllQuizForms() {
       document.getElementById('quizForm').style.display = 'none';
       document.getElementById('quizForm2').style.display = 'none';
       document.getElementById('quizForm3').style.display = 'none';
       document.getElementById('quizForm4').style.display = 'none';
+      document.getElementById('quizForm5').style.display = 'none';
     }
 
     const productList = [
