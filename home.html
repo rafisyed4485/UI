@@ -117,7 +117,7 @@
     .product button:hover {
       background-color: #0f63d6;
     }
-    #quizForm, #quizForm2, #quizForm3, #quizForm4, #quizForm5 {
+    #quizForm, #quizForm2, #quizForm3, #quizForm4, #quizForm5, #finalQuizForm {
       padding: 2rem;
       background: #f9f9f9;
       margin-top: 2rem;
@@ -159,6 +159,7 @@
       <a href="#" onclick="showQuiz3()">Quiz 3</a>
       <a href="#" onclick="showQuiz4()">Quiz 4</a>
       <a href="#" onclick="showQuiz5()">Quiz 5</a>
+      <a href="#" onclick="showFinalQuiz()">Final Quiz</a>
     </div>
 
     <div id="quizForm">
@@ -179,6 +180,10 @@
 
     <div id="quizForm5">
       <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSeolKgcwtd12xF2Hbg2XU9GoRYVymirO756aPPjTGmb-DKMdg/viewform?embedded=true" width="640" height="6892" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
+    </div>
+
+    <div id="finalQuizForm">
+      <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSdrum0IJSvGJ57Mlfkpsb56DnFq5c4zw77UmKOokB2CP7D6Og/viewform?embedded=true" width="640" height="27876" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
     </div>
   </div>
 
@@ -238,12 +243,20 @@
       document.getElementById('quizForm5').scrollIntoView({ behavior: 'smooth' });
     }
 
+    function showFinalQuiz() {
+      document.getElementById('productContainer').innerHTML = '';
+      hideAllQuizForms();
+      document.getElementById('finalQuizForm').style.display = 'block';
+      document.getElementById('finalQuizForm').scrollIntoView({ behavior: 'smooth' });
+    }
+
     function hideAllQuizForms() {
       document.getElementById('quizForm').style.display = 'none';
       document.getElementById('quizForm2').style.display = 'none';
       document.getElementById('quizForm3').style.display = 'none';
       document.getElementById('quizForm4').style.display = 'none';
       document.getElementById('quizForm5').style.display = 'none';
+      document.getElementById('finalQuizForm').style.display = 'none';
     }
 
     const productList = [
@@ -328,6 +341,7 @@
 
     const slides = document.querySelectorAll('#slideshow img');
     let currentSlide = 0;
+    slides[currentSlide].classList.add('active');
     setInterval(() => {
       slides[currentSlide].classList.remove('active');
       currentSlide = (currentSlide + 1) % slides.length;
