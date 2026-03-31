@@ -110,14 +110,17 @@
       box-shadow: 0 20px 60px rgba(0,0,0,0.1);
       gap: 2rem;
     }
-    /* Quiz links moved ABOVE slideshow */
+    /* Quiz links - now shows on "Quiz" click */
     .quiz-links-top {
-      display: flex;
+      display: none;
       gap: 20px;
       flex-wrap: wrap;
       justify-content: center;
       width: 90%;
       padding: 0 1rem;
+    }
+    .quiz-links-top.active {
+      display: flex;
     }
     .quiz-links-top a {
       font-size: 1.05rem;
@@ -185,7 +188,6 @@
     .slideshow {
       width: 90%;
       max-width: 1800px;
-      /* Back to ORIGINAL 820px height - no cropping! */
       height: 820px;
       position: relative;
       overflow: hidden;
@@ -265,7 +267,7 @@
       backdrop-filter: blur(10px);
     }
     @media (max-width: 768px) {
-      .quiz-links-top {
+      .quiz-links-top.active {
         flex-direction: column;
         align-items: center;
         gap: 12px;
@@ -296,7 +298,8 @@
       <div class="links">
         <a href="#" onclick="renderProducts(productList)">All Products</a>
         <a href="#" onclick="showCartProducts()">Cart (<span id="cartCount">0</span>)</a>
-        <a href="#" onclick="goToQuiz1()">Quiz</a>
+        <!-- Updated Quiz click behavior -->
+        <a href="#" onclick="toggleQuizLinks()">Quiz</a>
         <a href="controls.html">Controls</a>
         <a href="#" onclick="signOut()">Sign Out</a>
       </div>
@@ -307,8 +310,8 @@
   </header>
 
   <div class="slideshow-wrapper" id="slideshowSection">
-    <!-- Quiz links MOVED ABOVE slideshow -->
-    <div class="quiz-links-top">
+    <!-- Quiz links - HIDDEN by default, shows on "Quiz" click -->
+    <div class="quiz-links-top" id="quizLinksTop">
       <a href="#" onclick="showQuiz1()">Quiz 1</a>
       <a href="#" onclick="showQuiz2()">Quiz 2</a>
       <a href="#" onclick="showQuiz3()">Quiz 3</a>
@@ -317,7 +320,6 @@
       <a href="#" onclick="showFinalQuiz()" class="final-quiz">Final Quiz</a>
     </div>
 
-    <!-- ORIGINAL full-size slideshow - NO cropping! -->
     <div class="slideshow" id="slideshow">
       <img src="https://i.etsystatic.com/17780762/r/il/b94ac6/2657518102/il_1140xN.2657518102_72iw.jpg" />
       <img src="https://wallpapercat.com/w/middle-retina/9/3/2/5817846-3840x2160-desktop-hd-motivational-background-image.jpg" />
@@ -365,12 +367,26 @@
       window.location.href = "index.html";
     }
 
-    function goToQuiz1() {
+    // NEW: Toggle quiz links visibility
+    function toggleQuizLinks() {
+      const quizLinks = document.getElementById('quizLinksTop');
+      const slideshowSection = document.getElementById('slideshowSection');
+      
+      // Hide products and quiz forms first
+      document.getElementById('productContainer').innerHTML = '';
       hideAllQuizForms();
-      document.querySelector('.quiz-links-top').scrollIntoView({ behavior: 'smooth' });
+      
+      // Toggle quiz links
+      if (quizLinks.classList.contains('active')) {
+        quizLinks.classList.remove('active');
+      } else {
+        quizLinks.classList.add('active');
+        quizLinks.scrollIntoView({ behavior: 'smooth' });
+      }
     }
 
     function showQuiz1() {
+      hideQuizLinks();
       document.getElementById('productContainer').innerHTML = '';
       hideAllQuizForms();
       document.getElementById('quizForm').style.display = 'block';
@@ -378,6 +394,7 @@
     }
 
     function showQuiz2() {
+      hideQuizLinks();
       document.getElementById('productContainer').innerHTML = '';
       hideAllQuizForms();
       document.getElementById('quizForm2').style.display = 'block';
@@ -385,6 +402,7 @@
     }
 
     function showQuiz3() {
+      hideQuizLinks();
       document.getElementById('productContainer').innerHTML = '';
       hideAllQuizForms();
       document.getElementById('quizForm3').style.display = 'block';
@@ -392,6 +410,7 @@
     }
 
     function showQuiz4() {
+      hideQuizLinks();
       document.getElementById('productContainer').innerHTML = '';
       hideAllQuizForms();
       document.getElementById('quizForm4').style.display = 'block';
@@ -399,6 +418,7 @@
     }
 
     function showQuiz5() {
+      hideQuizLinks();
       document.getElementById('productContainer').innerHTML = '';
       hideAllQuizForms();
       document.getElementById('quizForm5').style.display = 'block';
@@ -406,10 +426,16 @@
     }
 
     function showFinalQuiz() {
+      hideQuizLinks();
       document.getElementById('productContainer').innerHTML = '';
       hideAllQuizForms();
       document.getElementById('finalQuizForm').style.display = 'block';
       document.getElementById('finalQuizForm').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // NEW: Hide quiz links when individual quiz is selected
+    function hideQuizLinks() {
+      document.getElementById('quizLinksTop').classList.remove('active');
     }
 
     function hideAllQuizForms() {
@@ -436,6 +462,7 @@
     };
 
     function renderProducts(products, isCart = false) {
+      hideQuizLinks();
       hideAllQuizForms();
       document.getElementById('slideshowSection').style.display = 'none';
       const container = document.getElementById('productContainer');
@@ -479,6 +506,7 @@
     }
 
     function showCartProducts() {
+      hideQuizLinks();
       hideAllQuizForms();
       document.getElementById('slideshowSection').style.display = 'none';
       const cart = JSON.parse(localStorage.getItem('cartItems')) || [];
