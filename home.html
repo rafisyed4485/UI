@@ -1,13 +1,3 @@
-Here’s the **full updated HTML + JS** with the behavior you asked for:
-
-- When user clicks **“Quiz”**:
-  - The page **scrolls to the quiz‑links bar**.
-  - The **quiz bar appears**.
-  - All existing functionality (cart, products, slideshow, individual quizzes, final quiz) **remains unchanged**.
-
-You can copy and replace your file with this:
-
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -120,17 +110,14 @@ You can copy and replace your file with this:
       box-shadow: 0 20px 60px rgba(0,0,0,0.1);
       gap: 2rem;
     }
-    /* Quiz links - now shows on "Quiz" click */
+    /* Quiz links moved ABOVE slideshow */
     .quiz-links-top {
-      display: none;
+      display: flex;
       gap: 20px;
       flex-wrap: wrap;
       justify-content: center;
       width: 90%;
       padding: 0 1rem;
-    }
-    .quiz-links-top.active {
-      display: flex;
     }
     .quiz-links-top a {
       font-size: 1.05rem;
@@ -198,6 +185,7 @@ You can copy and replace your file with this:
     .slideshow {
       width: 90%;
       max-width: 1800px;
+      /* Back to ORIGINAL 820px height - no cropping! */
       height: 820px;
       position: relative;
       overflow: hidden;
@@ -277,7 +265,7 @@ You can copy and replace your file with this:
       backdrop-filter: blur(10px);
     }
     @media (max-width: 768px) {
-      .quiz-links-top.active {
+      .quiz-links-top {
         flex-direction: column;
         align-items: center;
         gap: 12px;
@@ -308,8 +296,7 @@ You can copy and replace your file with this:
       <div class="links">
         <a href="#" onclick="renderProducts(productList)">All Products</a>
         <a href="#" onclick="showCartProducts()">Cart (<span id="cartCount">0</span>)</a>
-        <!-- Updated Quiz click behavior -->
-        <a href="#" onclick="toggleQuizLinks()">Quiz</a>
+        <a href="#" onclick="goToQuiz1()">Quiz</a>
         <a href="controls.html">Controls</a>
         <a href="#" onclick="signOut()">Sign Out</a>
       </div>
@@ -320,8 +307,8 @@ You can copy and replace your file with this:
   </header>
 
   <div class="slideshow-wrapper" id="slideshowSection">
-    <!-- Quiz links - HIDDEN by default, shows on "Quiz" click -->
-    <div class="quiz-links-top" id="quizLinksTop">
+    <!-- Quiz links MOVED ABOVE slideshow -->
+    <div class="quiz-links-top">
       <a href="#" onclick="showQuiz1()">Quiz 1</a>
       <a href="#" onclick="showQuiz2()">Quiz 2</a>
       <a href="#" onclick="showQuiz3()">Quiz 3</a>
@@ -330,6 +317,7 @@ You can copy and replace your file with this:
       <a href="#" onclick="showFinalQuiz()" class="final-quiz">Final Quiz</a>
     </div>
 
+    <!-- ORIGINAL full-size slideshow - NO cropping! -->
     <div class="slideshow" id="slideshow">
       <img src="https://i.etsystatic.com/17780762/r/il/b94ac6/2657518102/il_1140xN.2657518102_72iw.jpg" />
       <img src="https://wallpapercat.com/w/middle-retina/9/3/2/5817846-3840x2160-desktop-hd-motivational-background-image.jpg" />
@@ -357,4 +345,171 @@ You can copy and replace your file with this:
     </div>
 
     <div id="finalQuizForm">
-      <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSdrum0IJSvGJ57Mlfkpsb56DnFq5c4zw77UmKOokB2CP7D6Og/viewform?embedded=true" width="640" height="27876" frameborder="0"
+      <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSdrum0IJSvGJ57Mlfkpsb56DnFq5c4zw77UmKOokB2CP7D6Og/viewform?embedded=true" width="640" height="27876" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
+    </div>
+  </div>
+
+  <div class="products" id="productContainer"></div>
+
+  <script>
+    const userId = localStorage.getItem('loggedInUser');
+    if (!userId) {
+      window.location.href = "index.html";
+    } else {
+      document.getElementById('userDisplay').innerText = userId;
+    }
+
+    function signOut() {
+      localStorage.removeItem('loggedInUser');
+      localStorage.removeItem('cartItems');
+      window.location.href = "index.html";
+    }
+
+    function goToQuiz1() {
+      hideAllQuizForms();
+      document.querySelector('.quiz-links-top').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function showQuiz1() {
+      document.getElementById('productContainer').innerHTML = '';
+      hideAllQuizForms();
+      document.getElementById('quizForm').style.display = 'block';
+      document.getElementById('quizForm').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function showQuiz2() {
+      document.getElementById('productContainer').innerHTML = '';
+      hideAllQuizForms();
+      document.getElementById('quizForm2').style.display = 'block';
+      document.getElementById('quizForm2').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function showQuiz3() {
+      document.getElementById('productContainer').innerHTML = '';
+      hideAllQuizForms();
+      document.getElementById('quizForm3').style.display = 'block';
+      document.getElementById('quizForm3').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function showQuiz4() {
+      document.getElementById('productContainer').innerHTML = '';
+      hideAllQuizForms();
+      document.getElementById('quizForm4').style.display = 'block';
+      document.getElementById('quizForm4').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function showQuiz5() {
+      document.getElementById('productContainer').innerHTML = '';
+      hideAllQuizForms();
+      document.getElementById('quizForm5').style.display = 'block';
+      document.getElementById('quizForm5').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function showFinalQuiz() {
+      document.getElementById('productContainer').innerHTML = '';
+      hideAllQuizForms();
+      document.getElementById('finalQuizForm').style.display = 'block';
+      document.getElementById('finalQuizForm').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function hideAllQuizForms() {
+      document.getElementById('quizForm').style.display = 'none';
+      document.getElementById('quizForm2').style.display = 'none';
+      document.getElementById('quizForm3').style.display = 'none';
+      document.getElementById('quizForm4').style.display = 'none';
+      document.getElementById('quizForm5').style.display = 'none';
+      document.getElementById('finalQuizForm').style.display = 'none';
+    }
+
+    const productList = [
+      "iPhone 14", "Galaxy S23", "Pixel 7", "OnePlus 11", "Xiaomi 13", "Motorola Edge", "Nokia XR20"
+    ];
+
+    const productImages = {
+      "iPhone 14": "https://cdn-icons-png.flaticon.com/128/833/833472.png",
+      "Galaxy S23": "https://cdn-icons-png.flaticon.com/128/833/833462.png",
+      "Pixel 7": "https://cdn-icons-png.flaticon.com/128/1055/1055687.png",
+      "OnePlus 11": "https://cdn-icons-png.flaticon.com/128/2920/2920676.png",
+      "Xiaomi 13": "https://cdn-icons-png.flaticon.com/128/1055/1055672.png",
+      "Motorola Edge": "https://cdn-icons-png.flaticon.com/128/906/906334.png",
+      "Nokia XR20": "https://cdn-icons-png.flaticon.com/128/906/906343.png"
+    };
+
+    function renderProducts(products, isCart = false) {
+      hideAllQuizForms();
+      document.getElementById('slideshowSection').style.display = 'none';
+      const container = document.getElementById('productContainer');
+      container.innerHTML = "";
+      products.forEach(name => {
+        const price = (Math.floor(Math.random() * 500) + 300) + ".00";
+        const img = productImages[name] || "https://via.placeholder.com/60";
+        const button = isCart
+          ? `<button onclick="removeFromCart('${name}')">Remove</button>`
+          : `<button onclick="addToCart('${name}')">Add to Cart</button>`;
+        const productHTML = `
+          <div class="product">
+            <img src="${img}" alt="${name}">
+            <p><strong>${name}</strong></p>
+            <p>$${price}</p>
+            ${button}
+          </div>
+        `;
+        container.insertAdjacentHTML('beforeend', productHTML);
+      });
+    }
+
+    function addToCart(product) {
+      let cart = JSON.parse(localStorage.getItem('cartItems')) || [];
+      if (!cart.includes(product)) {
+        cart.push(product);
+        localStorage.setItem('cartItems', JSON.stringify(cart));
+        updateCartCount();
+        alert(`${product} added to cart!`);
+      } else {
+        alert(`${product} is already in cart.`);
+      }
+    }
+
+    function removeFromCart(product) {
+      let cart = JSON.parse(localStorage.getItem('cartItems')) || [];
+      cart = cart.filter(item => item !== product);
+      localStorage.setItem('cartItems', JSON.stringify(cart));
+      updateCartCount();
+      showCartProducts();
+    }
+
+    function showCartProducts() {
+      hideAllQuizForms();
+      document.getElementById('slideshowSection').style.display = 'none';
+      const cart = JSON.parse(localStorage.getItem('cartItems')) || [];
+      const container = document.getElementById('productContainer');
+      container.innerHTML = "";
+
+      if (cart.length === 0) {
+        alert("Your cart is empty.");
+        updateCartCount();
+        return;
+      }
+
+      renderProducts(cart, true);
+    }
+
+    function updateCartCount() {
+      const cart = JSON.parse(localStorage.getItem('cartItems')) || [];
+      document.getElementById('cartCount').innerText = cart.length;
+    }
+
+    updateCartCount();
+
+    const slides = document.querySelectorAll('#slideshow img');
+    let currentSlide = 0;
+    slides[currentSlide].classList.add('active');
+    setInterval(() => {
+      slides[currentSlide].classList.remove('active');
+      currentSlide = (currentSlide + 1) % slides.length;
+      slides[currentSlide].classList.add('active');
+    }, 3000);
+  </script>
+
+</body>
+</html>
