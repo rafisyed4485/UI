@@ -1,373 +1,225 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Dream IT Solutions</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      background: #fff;
-    }
-    header {
-      background-color: #ffffff;
-      padding: 1rem 2rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      border-bottom: 1px solid #ccc;
-    }
-    .logo {
-      font-size: 1.8rem;
-      font-weight: bold;
-    }
-    .logo span {
-      font-weight: bold;
-    }
-    .nav-actions {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-end;
-    }
-    .nav-actions .links {
-      display: flex;
-      gap: 20px;
-      align-items: center;
-    }
-    .nav-actions a {
-      color: #1877f2;
-      text-decoration: underline;
-      font-size: 0.95rem;
-      cursor: pointer;
-    }
-    .welcome {
-      font-size: 0.9rem;
-      color: #555;
-      margin-top: 6px;
-    }
-    .slideshow-wrapper {
-      background-color: white;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 1rem 0;
-    }
-    .slideshow {
-      width: 80%;
-      max-width: 1800px;
-      height: 820px;
-      position: relative;
-      overflow: hidden;
-      border-radius: 12px;
-      box-shadow: 0 0 0 2px #ffffff;
-    }
-    .slideshow img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: none;
-      position: absolute;
-      top: 0;
-      left: 0;
-    }
-    .slideshow img.active {
-      display: block;
-    }
-    .quiz-links {
-      display: flex;
-      gap: 30px;
-      margin-top: 1rem;
-      flex-wrap: wrap;
-    }
-    .quiz-links a {
-      font-size: 1rem;
-      color: #1877f2;
-      text-decoration: underline;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
+<meta charset="UTF-8" />
+<title>Dream IT Solutions</title>
 
-    /* Final Quiz red styling & animation */
-    .quiz-links a.final-quiz {
-      color: #ff1744;
-      font-weight: bold;
-      text-decoration: none;
-      animation: pulse 1.5s infinite;
-    }
-    .quiz-links a.final-quiz:hover {
-      text-decoration: underline;
-      color: #d50000;
-    }
-    @keyframes pulse {
-      0% { text-shadow: 0 0 0px #ff1744; }
-      50% { text-shadow: 0 0 10px #ff1744; }
-      100% { text-shadow: 0 0 0px #ff1744; }
-    }
+<style>
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+  color: white;
+}
 
-    .products {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 20px;
-      justify-content: center;
-      padding: 2rem;
-    }
-    .product {
-      background: white;
-      padding: 1rem;
-      border-radius: 8px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-      width: 160px;
-      text-align: center;
-    }
-    .product img {
-      width: 60px;
-      height: 60px;
-      object-fit: contain;
-      margin-bottom: 0.5rem;
-    }
-    .product button {
-      margin-top: 10px;
-      padding: 6px 10px;
-      background-color: #1877f2;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-    .product button:hover {
-      background-color: #0f63d6;
-    }
-    #quizForm, #quizForm2, #quizForm3, #quizForm4, #quizForm5, #finalQuizForm {
-      padding: 2rem;
-      background: #f9f9f9;
-      margin-top: 2rem;
-      display: none;
-    }
-  </style>
+/* HEADER */
+header {
+  display: flex;
+  justify-content: space-between;
+  padding: 15px 40px;
+  backdrop-filter: blur(12px);
+  background: rgba(255,255,255,0.05);
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+/* LOGO */
+.logo {
+  font-size: 1.8rem;
+  font-weight: bold;
+}
+
+/* NAV BUTTONS */
+.links {
+  display: flex;
+  gap: 15px;
+}
+
+.links a {
+  padding: 8px 18px;
+  border-radius: 12px;
+  text-decoration: none;
+  color: white;
+  background: linear-gradient(135deg, #ff416c, #ff4b2b);
+  transition: 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+
+.links a:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 0 20px rgba(255,75,43,0.7);
+}
+
+/* SHINE EFFECT */
+.links a::before {
+  content: "";
+  position: absolute;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(120deg, transparent, rgba(255,255,255,0.6), transparent);
+}
+
+.links a:hover::before {
+  left: 100%;
+  transition: 0.5s;
+}
+
+/* WELCOME BADGE */
+.welcome-box {
+  margin-top: 10px;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  background: linear-gradient(135deg, #00c6ff, #0072ff);
+  box-shadow: 0 0 15px rgba(0,198,255,0.6);
+  display: inline-block;
+}
+
+/* SLIDESHOW */
+.slideshow {
+  width: 80%;
+  height: 450px;
+  margin: 30px auto;
+  border-radius: 20px;
+  overflow: hidden;
+  position: relative;
+}
+
+.slideshow img {
+  width: 100%;
+  height: 100%;
+  display: none;
+  position: absolute;
+}
+
+.slideshow img.active {
+  display: block;
+}
+
+/* PRODUCTS */
+.products {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  justify-content: center;
+  padding: 40px;
+}
+
+/* PREMIUM CARD */
+.product {
+  width: 200px;
+  padding: 20px;
+  border-radius: 20px;
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(10px);
+  text-align: center;
+  transition: 0.4s;
+  box-shadow: 0 0 20px rgba(0,0,0,0.3);
+}
+
+.product:hover {
+  transform: rotateY(10deg) scale(1.05);
+  box-shadow: 0 0 30px rgba(0,198,255,0.7);
+}
+
+.product button {
+  margin-top: 10px;
+  padding: 8px;
+  border-radius: 10px;
+  border: none;
+  background: linear-gradient(135deg, #43e97b, #38f9d7);
+  cursor: pointer;
+}
+
+</style>
 </head>
+
 <body>
 
-  <header>
-    <div class="logo">
-      <a href="home.html" style="text-decoration: none; color: inherit;">
-        Dream<span style="color:#00bcd4;">IT</span><span style="color:#ff1744;">Solutions</span>
-      </a>
-    </div>
-    <div class="nav-actions">
-      <div class="links">
-        <a href="#" onclick="renderProducts(productList)">All Products</a>
-        <a href="#" onclick="showCartProducts()">Cart (<span id="cartCount">0</span>)</a>
-        <a href="#" onclick="goToQuiz1()">Quiz</a>
-        <a href="controls.html">Controls</a>
-        <a href="#" onclick="signOut()">Sign Out</a>
-      </div>
-      <div class="welcome">
-        Welcome, <span id="userDisplay">User</span>!
-      </div>
-    </div>
-  </header>
-
-  <div class="slideshow-wrapper" id="slideshowSection">
-    <div class="slideshow" id="slideshow">
-      <img src="https://i.etsystatic.com/17780762/r/il/b94ac6/2657518102/il_1140xN.2657518102_72iw.jpg" />
-      <img src="https://wallpapercat.com/w/middle-retina/9/3/2/5817846-3840x2160-desktop-hd-motivational-background-image.jpg" />
-      <img src="https://blog.attendancebot.com/wp-content/uploads/2021/05/Motivational-Quote-for-Work-by-Gandhi-1024x576.jpg" />
-    </div>
-    <div class="quiz-links">
-      <a href="#" onclick="showQuiz1()">Quiz 1</a>
-      <a href="#" onclick="showQuiz2()">Quiz 2</a>
-      <a href="#" onclick="showQuiz3()">Quiz 3</a>
-      <a href="#" onclick="showQuiz4()">Quiz 4</a>
-      <a href="#" onclick="showQuiz5()">Quiz 5</a>
-      <a href="#" onclick="showFinalQuiz()" class="final-quiz">Final Quiz</a>
-    </div>
-
-    <div id="quizForm">
-      <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfT6W9I7GS6xnPujZgnpJd0j8YtJLG1xdQ-Y6ShO1YZ7-_5Cw/viewform?embedded=true" width="1200" height="1822" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
-    </div>
-
-    <div id="quizForm2">
-      <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSd4sleUPDexnAR8eKNnbgP3lUOwINe3S-LTeTiwlfbG73cdkQ/viewform?embedded=true" width="1800" height="377" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
-    </div>
-
-    <div id="quizForm3">
-      <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfda11TEoQetlOEbwbuBGS3o7f2cc5gxFv8hMnGPLrBr5AcMQ/viewform?embedded=true" width="640" height="6878" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
-    </div>
-
-    <div id="quizForm4">
-      <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSei4VIoHr-Pg4nKsXmzLGLLYI7N3nfvnWRuPfSCUUqNtKgArQ/viewform?embedded=true" width="640" height="5419" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
-    </div>
-
-    <div id="quizForm5">
-      <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSeolKgcwtd12xF2Hbg2XU9GoRYVymirO756aPPjTGmb-DKMdg/viewform?embedded=true" width="640" height="6892" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
-    </div>
-
-    <div id="finalQuizForm">
-      <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSdrum0IJSvGJ57Mlfkpsb56DnFq5c4zw77UmKOokB2CP7D6Og/viewform?embedded=true" width="640" height="27876" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
-    </div>
+<header>
+  <div class="logo">
+    Dream<span style="color:#00bcd4;">IT</span><span style="color:#ff1744;">Solutions</span>
   </div>
 
-  <div class="products" id="productContainer"></div>
+  <div>
+    <div class="links">
+      <a href="#" onclick="renderProducts(productList)">🛒 Products</a>
+      <a href="#" onclick="showCart()">🧺 Cart (<span id="cartCount">0</span>)</a>
+      <a href="#">🎯 Quiz</a>
+      <a href="#">⚙️ Controls</a>
+      <a href="#" onclick="signOut()">🚪 Sign Out</a>
+    </div>
 
-  <script>
-    const userId = localStorage.getItem('loggedInUser');
-    if (!userId) {
-      window.location.href = "index.html";
-    } else {
-      document.getElementById('userDisplay').innerText = userId;
-    }
+    <div class="welcome-box">
+      ✨ Welcome, <span id="userDisplay">User</span>
+    </div>
+  </div>
+</header>
 
-    function signOut() {
-      localStorage.removeItem('loggedInUser');
-      localStorage.removeItem('cartItems');
-      window.location.href = "index.html";
-    }
+<div class="slideshow" id="slideshow">
+  <img src="https://wallpapercat.com/w/full/9/3/2/5817846-3840x2160-desktop-hd-motivational-background-image.jpg">
+  <img src="https://images.unsplash.com/photo-1518779578993-ec3579fee39f">
+</div>
 
-    function goToQuiz1() {
-      hideAllQuizForms();
-      document.querySelector('.quiz-links').scrollIntoView({ behavior: 'smooth' });
-    }
+<div class="products" id="productContainer"></div>
 
-    function showQuiz1() {
-      document.getElementById('productContainer').innerHTML = '';
-      hideAllQuizForms();
-      document.getElementById('quizForm').style.display = 'block';
-      document.getElementById('quizForm').scrollIntoView({ behavior: 'smooth' });
-    }
+<script>
+const user = localStorage.getItem("loggedInUser") || "drea@gmail.com";
+document.getElementById("userDisplay").innerText = user;
 
-    function showQuiz2() {
-      document.getElementById('productContainer').innerHTML = '';
-      hideAllQuizForms();
-      document.getElementById('quizForm2').style.display = 'block';
-      document.getElementById('quizForm2').scrollIntoView({ behavior: 'smooth' });
-    }
+/* PRODUCTS */
+const productList = ["iPhone 14","Galaxy S23","Pixel 7","OnePlus 11"];
 
-    function showQuiz3() {
-      document.getElementById('productContainer').innerHTML = '';
-      hideAllQuizForms();
-      document.getElementById('quizForm3').style.display = 'block';
-      document.getElementById('quizForm3').scrollIntoView({ behavior: 'smooth' });
-    }
+function renderProducts(list){
+  let html="";
+  list.forEach(p=>{
+    html += `
+    <div class="product">
+      <h3>${p}</h3>
+      <button onclick="addToCart('${p}')">Add to Cart</button>
+    </div>`;
+  });
+  document.getElementById("productContainer").innerHTML = html;
+}
 
-    function showQuiz4() {
-      document.getElementById('productContainer').innerHTML = '';
-      hideAllQuizForms();
-      document.getElementById('quizForm4').style.display = 'block';
-      document.getElementById('quizForm4').scrollIntoView({ behavior: 'smooth' });
-    }
+/* CART */
+function addToCart(p){
+  let cart = JSON.parse(localStorage.getItem("cart"))||[];
+  cart.push(p);
+  localStorage.setItem("cart", JSON.stringify(cart));
+  updateCart();
+}
 
-    function showQuiz5() {
-      document.getElementById('productContainer').innerHTML = '';
-      hideAllQuizForms();
-      document.getElementById('quizForm5').style.display = 'block';
-      document.getElementById('quizForm5').scrollIntoView({ behavior: 'smooth' });
-    }
+function showCart(){
+  let cart = JSON.parse(localStorage.getItem("cart"))||[];
+  renderProducts(cart);
+}
 
-    function showFinalQuiz() {
-      document.getElementById('productContainer').innerHTML = '';
-      hideAllQuizForms();
-      document.getElementById('finalQuizForm').style.display = 'block';
-      document.getElementById('finalQuizForm').scrollIntoView({ behavior: 'smooth' });
-    }
+function updateCart(){
+  let cart = JSON.parse(localStorage.getItem("cart"))||[];
+  document.getElementById("cartCount").innerText = cart.length;
+}
 
-    function hideAllQuizForms() {
-      document.getElementById('quizForm').style.display = 'none';
-      document.getElementById('quizForm2').style.display = 'none';
-      document.getElementById('quizForm3').style.display = 'none';
-      document.getElementById('quizForm4').style.display = 'none';
-      document.getElementById('quizForm5').style.display = 'none';
-      document.getElementById('finalQuizForm').style.display = 'none';
-    }
+updateCart();
 
-    const productList = [
-      "iPhone 14", "Galaxy S23", "Pixel 7", "OnePlus 11", "Xiaomi 13", "Motorola Edge", "Nokia XR20"
-    ];
+/* SLIDESHOW */
+let slides = document.querySelectorAll("#slideshow img");
+let i=0;
+slides[i].classList.add("active");
 
-    const productImages = {
-      "iPhone 14": "https://cdn-icons-png.flaticon.com/128/833/833472.png",
-      "Galaxy S23": "https://cdn-icons-png.flaticon.com/128/833/833462.png",
-      "Pixel 7": "https://cdn-icons-png.flaticon.com/128/1055/1055687.png",
-      "OnePlus 11": "https://cdn-icons-png.flaticon.com/128/2920/2920676.png",
-      "Xiaomi 13": "https://cdn-icons-png.flaticon.com/128/1055/1055672.png",
-      "Motorola Edge": "https://cdn-icons-png.flaticon.com/128/906/906334.png",
-      "Nokia XR20": "https://cdn-icons-png.flaticon.com/128/906/906343.png"
-    };
+setInterval(()=>{
+  slides[i].classList.remove("active");
+  i=(i+1)%slides.length;
+  slides[i].classList.add("active");
+},3000);
 
-    function renderProducts(products, isCart = false) {
-      hideAllQuizForms();
-      document.getElementById('slideshowSection').style.display = 'none';
-      const container = document.getElementById('productContainer');
-      container.innerHTML = "";
-      products.forEach(name => {
-        const price = (Math.floor(Math.random() * 500) + 300) + ".00";
-        const img = productImages[name] || "https://via.placeholder.com/60";
-        const button = isCart
-          ? `<button onclick="removeFromCart('${name}')">Remove</button>`
-          : `<button onclick="addToCart('${name}')">Add to Cart</button>`;
-        const productHTML = `
-          <div class="product">
-            <img src="${img}" alt="${name}">
-            <p><strong>${name}</strong></p>
-            <p>$${price}</p>
-            ${button}
-          </div>
-        `;
-        container.insertAdjacentHTML('beforeend', productHTML);
-      });
-    }
-
-    function addToCart(product) {
-      let cart = JSON.parse(localStorage.getItem('cartItems')) || [];
-      if (!cart.includes(product)) {
-        cart.push(product);
-        localStorage.setItem('cartItems', JSON.stringify(cart));
-        updateCartCount();
-        alert(`${product} added to cart!`);
-      } else {
-        alert(`${product} is already in cart.`);
-      }
-    }
-
-    function removeFromCart(product) {
-      let cart = JSON.parse(localStorage.getItem('cartItems')) || [];
-      cart = cart.filter(item => item !== product);
-      localStorage.setItem('cartItems', JSON.stringify(cart));
-      updateCartCount();
-      showCartProducts();
-    }
-
-    function showCartProducts() {
-      hideAllQuizForms();
-      document.getElementById('slideshowSection').style.display = 'none';
-      const cart = JSON.parse(localStorage.getItem('cartItems')) || [];
-      const container = document.getElementById('productContainer');
-      container.innerHTML = "";
-
-      if (cart.length === 0) {
-        alert("Your cart is empty.");
-        updateCartCount();
-        return;
-      }
-
-      renderProducts(cart, true);
-    }
-
-    function updateCartCount() {
-      const cart = JSON.parse(localStorage.getItem('cartItems')) || [];
-      document.getElementById('cartCount').innerText = cart.length;
-    }
-
-    updateCartCount();
-
-    const slides = document.querySelectorAll('#slideshow img');
-    let currentSlide = 0;
-    slides[currentSlide].classList.add('active');
-    setInterval(() => {
-      slides[currentSlide].classList.remove('active');
-      currentSlide = (currentSlide + 1) % slides.length;
-      slides[currentSlide].classList.add('active');
-    }, 3000);
-  </script>
+/* SIGN OUT */
+function signOut(){
+  localStorage.clear();
+  location.reload();
+}
+</script>
 
 </body>
 </html>
